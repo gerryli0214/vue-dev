@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello World</title>
+    <script src="../../dist/vue.js"></script>
+</head>
+<body>
+    <div id='app'>{{msg}}</div>
+    <script>
+        const mixins = {
+            data () {
+                return {
+                    a: 1,
+                    b: 2
+                }
+            },
+            methods: {
+                test () {
+                    console.log('这是一个测试方法')
+                }
+            },
+            beforeCreate() {
+                console.log('执行了beforeCreate')
+            },
+            created() {
+                console.log('执行了created')
+            },
+        }
+        // 自定义属性合并策略
+        Vue.config.optionMergeStrategies.methods = function (toVal, fromVal) {
+            if (toVal && fromVal) return fromVal
+            if (toVal) return toVal
+            if (fromVal) return fromVal
+        }
+
+        Vue.component('hello-world', {
+            data () {
+                return {
+                    cc: 123
+                }
+            },
+            template: '<div>{{cc}}</div>'
+        })
+
+
+        var vm = new Vue({
+            el: '#app',
+            mixins: [ mixins ],
+            data: {
+                msg: 'Hello World',
+                a: 11
+            },
+            methods: {
+                test () {
+                    console.log('这是一个主方法')
+                }
+            },
+            created() {
+                console.log('执行了主组件上的created方法')
+            },
+        })
+
+    </script>
+</body>
+</html>
