@@ -19,7 +19,6 @@ import {
 } from '../util/index'
 // 初始化全局API
 export function initGlobalAPI (Vue: GlobalAPI) {
-  debugger
   // config
   const configDef = {}
   configDef.get = () => config

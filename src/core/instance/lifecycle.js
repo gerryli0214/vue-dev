@@ -100,7 +100,6 @@ export function lifecycleMixin (Vue: Class<Component>) {
     if (vm._isBeingDestroyed) {
       return
     }
-    debugger
     callHook(vm, 'beforeDestroy')
     vm._isBeingDestroyed = true
     // remove self from parent
@@ -155,7 +154,6 @@ export function mountComponent (
   vm.$el = el
   // 如果没有获取解析的render函数，则会抛出警告
   // render是解析模板文件生成的
-  debugger
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode
     if (process.env.NODE_ENV !== 'production') {
@@ -211,7 +209,6 @@ export function mountComponent (
   // 监听当前组件状态，当有数据变化时，更新组件
   new Watcher(vm, updateComponent, noop, {
     before () {
-      debugger
       if (vm._isMounted && !vm._isDestroyed) {
         // 数据更新引发的组件更新
         callHook(vm, 'beforeUpdate')

@@ -25,7 +25,7 @@ import {
  * Option overwriting strategies are functions that handle
  * how to merge a parent option value and a child option
  * value into the final value.
- * 定义属性合并策略，用于父属性和子属性的合并策略
+ * 获取合并策略，用于父属性和子属性的合并策略
  */
 const strats = config.optionMergeStrategies
 
@@ -76,7 +76,7 @@ function mergeData (to: Object, from: ?Object): Object {
 }
 
 /**
- * Data 
+ * Data
  * 合并对象 or 数组
  */
 export function mergeDataOrFn (
@@ -127,7 +127,6 @@ strats.data = function (
   childVal: any,
   vm?: Component
 ): ?Function {
-  debugger
   if (!vm) {
     if (childVal && typeof childVal !== 'function') {
       process.env.NODE_ENV !== 'production' && warn(
@@ -444,7 +443,6 @@ export function mergeOptions (
   // 只有合并的options拥有_base属性
   // 需要递归进行合并属性
   // 首先合并extends和mixins
-  debugger
   if (!child._base) {
     if (child.extends) {
       parent = mergeOptions(parent, child.extends, vm)

@@ -9,7 +9,7 @@ let uid = 0
 /**
  * A dep is an observable that can have multiple
  * directives subscribing to it.
- * 发布-订阅
+ * 发布-订阅模式
  */
 export default class Dep {
   static target: ?Watcher;
@@ -58,12 +58,12 @@ export default class Dep {
 // 一个时间点只能执行一个监听对象？？@todo
 Dep.target = null
 const targetStack = []
-
+// 进栈
 export function pushTarget (target: ?Watcher) {
   targetStack.push(target)
   Dep.target = target
 }
-
+// 出栈
 export function popTarget () {
   targetStack.pop()
   Dep.target = targetStack[targetStack.length - 1]

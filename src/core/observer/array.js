@@ -7,7 +7,7 @@ import { def } from '../util/index'
 // 重写数组方法
 const arrayProto = Array.prototype
 export const arrayMethods = Object.create(arrayProto)
-
+// 重写数组的方法
 const methodsToPatch = [
   'push',
   'pop',

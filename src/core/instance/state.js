@@ -50,11 +50,13 @@ export function proxy (target: Object, sourceKey: string, key: string) {
  * @param vm
  */
 export function initState (vm: Component) {
+  debugger
   vm._watchers = []
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
   if (opts.data) {
+    // 初始化data
     initData(vm)
   } else {
     observe(vm._data = {}, true /* asRootData */)
@@ -114,7 +116,7 @@ function initProps (vm: Component, propsOptions: Object) {
 }
 
 /**
- * 初始化数据
+ * 初始化data
  * @param vm
  */
 function initData (vm: Component) {
@@ -138,6 +140,7 @@ function initData (vm: Component) {
   while (i--) {
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
+      // 属性名不能与方法名重复
       if (methods && hasOwn(methods, key)) {
         warn(
           `Method "${key}" has already been defined as a data property.`,
@@ -145,22 +148,26 @@ function initData (vm: Component) {
         )
       }
     }
+    // 属性名不能与state名称重复
     if (props && hasOwn(props, key)) {
       process.env.NODE_ENV !== 'production' && warn(
         `The data property "${key}" is already declared as a prop. ` +
         `Use prop default value instead.`,
         vm
       )
-    } else if (!isReserved(key)) {
+    } else if (!isReserved(key)) { // 验证key值的合法性
+      // 将_data中的数据挂载到组件vm上
       proxy(vm, `_data`, key)
     }
   }
   // observe data
+  // 响应式监听data是数据的变化
   observe(data, true /* asRootData */)
 }
 
 export function getData (data: Function, vm: Component): any {
   // #7573 disable dep collection when invoking data getters
+  // 进栈出栈，主要功能？？？@todo
   pushTarget()
   try {
     return data.call(vm, vm)
@@ -266,7 +273,7 @@ function createGetterInvoker(fn) {
     return fn.call(this, this)
   }
 }
-
+// 初始化methods，挂载到组件上
 function initMethods (vm: Component, methods: Object) {
   const props = vm.$options.props
   for (const key in methods) {

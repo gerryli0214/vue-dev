@@ -88,6 +88,7 @@ function flushSchedulerQueue () {
   for (index = 0; index < queue.length; index++) {
     watcher = queue[index]
     if (watcher.before) {
+      // 调用beforeUpdate钩子
       watcher.before()
     }
     id = watcher.id
@@ -96,6 +97,7 @@ function flushSchedulerQueue () {
     // in dev build, check and stop circular updates.
     if (process.env.NODE_ENV !== 'production' && has[id] != null) {
       circular[id] = (circular[id] || 0) + 1
+      // 最大更新次数是100
       if (circular[id] > MAX_UPDATE_COUNT) {
         warn(
           'You may have an infinite update loop ' + (

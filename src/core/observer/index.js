@@ -15,7 +15,8 @@ import {
   isValidArrayIndex,
   isServerRendering
 } from '../util/index'
-
+import {debug} from "webpack";
+// 获取arrayMethods对象可枚举的键值
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
 
 /**
@@ -40,18 +41,26 @@ export class Observer {
   vmCount: number; // number of vms that have this object as root $data
 
   constructor (value: any) {
+    debugger
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
+    // 给监听对象定义一个__ob__属性，属性值为this,指向当前实例？？？@todo
+    // 存在该属性的对象，就是响应式对象？？？@todo
     def(value, '__ob__', this)
+    // 数组类型
     if (Array.isArray(value)) {
+      // 存在原型 __proto__,重写数组原型上的方法
       if (hasProto) {
         protoAugment(value, arrayMethods)
       } else {
+        // 不存在原型，则在数组中复制重写后的数组方法
         copyAugment(value, arrayMethods, arrayKeys)
       }
+      // 响应式监听数组的变化
       this.observeArray(value)
     } else {
+      // 如果值的类型为Object,则响应式的声明对象属性
       this.walk(value)
     }
   }
@@ -60,6 +69,7 @@ export class Observer {
    * Walk through all properties and convert them into
    * getter/setters. This method should only be called when
    * value type is Object.
+   * 声明响应式属性
    */
   walk (obj: Object) {
     const keys = Object.keys(obj)
@@ -70,6 +80,7 @@ export class Observer {
 
   /**
    * Observe a list of Array items.
+   * 响应式监听数组中的每一项
    */
   observeArray (items: Array<any>) {
     for (let i = 0, l = items.length; i < l; i++) {
@@ -106,21 +117,23 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * Attempt to create an observer instance for a value,
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one.
+ * 观察数组中每一项的变化，返回一个观察者对象
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
     return
   }
   let ob: Observer | void
+  // 存在__ob__属性的一般为观察者对象的实例
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
-  } else if (
+  } else if ( // Object.isExtensible 判断对象是否是可扩展的(可以添加新属性)
     shouldObserve &&
     !isServerRendering() &&
     (Array.isArray(value) || isPlainObject(value)) &&
     Object.isExtensible(value) &&
     !value._isVue
-  ) {
+  ) { // 必须为数组 || 对象，才能实例化观察者对象
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -131,6 +144,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
 
 /**
  * Define a reactive property on an Object.
+ * 在一个对象中声明响应式的属性
  */
 export function defineReactive (
   obj: Object,
@@ -143,6 +157,7 @@ export function defineReactive (
   const dep = new Dep()
 
   const property = Object.getOwnPropertyDescriptor(obj, key)
+  // 对象的属性应该是可扩展、可配置的
   if (property && property.configurable === false) {
     return
   }
@@ -150,16 +165,19 @@ export function defineReactive (
   // cater for pre-defined getter/setters
   const getter = property && property.get
   const setter = property && property.set
+  // 处理obj的值
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-
+  // 如果val值存在Object，则需要侦听val值的变化
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
+      debugger
       const value = getter ? getter.call(obj) : val
+      // 存在依赖的作用域？？？@todo
       if (Dep.target) {
         dep.depend()
         if (childOb) {
@@ -188,7 +206,9 @@ export function defineReactive (
       } else {
         val = newVal
       }
+      // 重新更新下数据依赖
       childOb = !shallow && observe(newVal)
+      // 通知数据更新？？？@todo
       dep.notify()
     }
   })

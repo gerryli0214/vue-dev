@@ -16,7 +16,6 @@ export function initMixin (Vue: Class<Component>) {
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
-    debugger
     vm._uid = uid++
 
     let startTag, endTag
@@ -36,10 +35,8 @@ export function initMixin (Vue: Class<Component>) {
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
-    } else {
-      // 合并vue属性
+    } else { // 合并vue属性
       vm.$options = mergeOptions(
-        // 合并vue构造函数上的属性？？
         resolveConstructorOptions(vm.constructor),
         options || {},
         vm
@@ -99,7 +96,7 @@ export function initInternalComponent (vm: Component, options: InternalComponent
     opts.staticRenderFns = options.staticRenderFns
   }
 }
-
+// 获取构造函数上的属性
 export function resolveConstructorOptions (Ctor: Class<Component>) {
   // Ctor -> Vue的构造函数
   let options = Ctor.options
