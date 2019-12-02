@@ -8,7 +8,7 @@ import {
   invokeWithErrorHandling
 } from '../util/index'
 import { updateListeners } from '../vdom/helpers/index'
-
+// 初始化组件上的事件侦听
 export function initEvents (vm: Component) {
   vm._events = Object.create(null)
   vm._hasHookEvent = false

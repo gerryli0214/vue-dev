@@ -46,7 +46,7 @@ export function initLifecycle (vm: Component) {
 
   vm.$children = []
   vm.$refs = {}
-
+  // 初始化vm上的标志状态
   vm._watcher = null
   vm._inactive = null
   vm._directInactive = false

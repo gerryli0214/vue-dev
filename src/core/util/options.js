@@ -78,6 +78,7 @@ function mergeData (to: Object, from: ?Object): Object {
 /**
  * Data
  * 合并对象 or 数组
+ * 利用闭包，返回一个包含私有参数的执行方法
  */
 export function mergeDataOrFn (
   parentVal: any,

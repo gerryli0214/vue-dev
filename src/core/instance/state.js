@@ -36,6 +36,7 @@ const sharedPropertyDefinition = {
 }
 // 属性代理，从一个原对象中拿数据
 export function proxy (target: Object, sourceKey: string, key: string) {
+  // 设置对象属性的get/set,将data中的数据代理到组件对象vm上
   sharedPropertyDefinition.get = function proxyGetter () {
     return this[sourceKey][key]
   }
@@ -51,6 +52,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
  */
 export function initState (vm: Component) {
   debugger
+  // 初始化组件的watcher
   vm._watchers = []
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
@@ -165,12 +167,14 @@ function initData (vm: Component) {
   // 响应式监听data是数据的变化
   observe(data, true /* asRootData */)
 }
-
+// 获取data数据
 export function getData (data: Function, vm: Component): any {
   // #7573 disable dep collection when invoking data getters
   // 进栈出栈，主要功能？？？@todo
+  // 锁定当前data执行作用域，防止发生时序问题？？？
   pushTarget()
   try {
+    // 调用在属性合并时，返回的data
     return data.call(vm, vm)
   } catch (e) {
     handleError(e, vm, `data()`)

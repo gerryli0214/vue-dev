@@ -34,6 +34,7 @@ export function toggleObserving (value: boolean) {
  * object. Once attached, the observer converts the target
  * object's property keys into getter/setters that
  * collect dependencies and dispatch updates.
+ * 收集依赖 && 派发更新
  */
 export class Observer {
   value: any;
@@ -43,10 +44,11 @@ export class Observer {
   constructor (value: any) {
     debugger
     this.value = value
+    // 实例化一个发布-订阅模型
     this.dep = new Dep()
     this.vmCount = 0
-    // 给监听对象定义一个__ob__属性，属性值为this,指向当前实例？？？@todo
-    // 存在该属性的对象，就是响应式对象？？？@todo
+    // 给监听对象定义一个__ob__属性，属性值为this,指向当前实例
+    // 存在该属性的对象，就是响应式对象
     def(value, '__ob__', this)
     // 数组类型
     if (Array.isArray(value)) {
@@ -154,7 +156,7 @@ export function defineReactive (
   customSetter?: ?Function,
   shallow?: boolean
 ) {
-  // 初始化一个发布-订阅模型
+  // 初始化一个发布-订阅模型，每个对象都包含一个dep实例
   const dep = new Dep()
   // 获取属性描述符
   const property = Object.getOwnPropertyDescriptor(obj, key)
@@ -191,6 +193,8 @@ export function defineReactive (
     },
     set: function reactiveSetter (newVal) {
       // 派发更新 @todo
+      // 获取到value数据
+      debugger
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {

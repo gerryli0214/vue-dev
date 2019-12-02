@@ -57,7 +57,7 @@ export default class Dep {
 // The current target watcher being evaluated.
 // This is globally unique because only one watcher
 // can be evaluated at a time.
-// 一个时间点只能执行一个监听对象？？@todo
+// 设置当前时间点的执行对象
 Dep.target = null
 const targetStack = []
 // 进栈
