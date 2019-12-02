@@ -34,7 +34,7 @@ const sharedPropertyDefinition = {
   get: noop,
   set: noop
 }
-
+// 属性代理，从一个原对象中拿数据
 export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter () {
     return this[sourceKey][key]
@@ -121,6 +121,7 @@ function initProps (vm: Component, propsOptions: Object) {
  */
 function initData (vm: Component) {
   let data = vm.$options.data
+  // 获取到组件上的data
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
@@ -156,7 +157,7 @@ function initData (vm: Component) {
         vm
       )
     } else if (!isReserved(key)) { // 验证key值的合法性
-      // 将_data中的数据挂载到组件vm上
+      // 将_data中的数据挂载到组件vm上,这样就可以通过this.xxx访问到组件上的数据
       proxy(vm, `_data`, key)
     }
   }
@@ -356,7 +357,7 @@ export function stateMixin (Vue: Class<Component>) {
 
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
-
+  // 初始化根组件的$watch
   Vue.prototype.$watch = function (
     expOrFn: string | Function,
     cb: any,

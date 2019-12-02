@@ -74,6 +74,7 @@ export class Observer {
   walk (obj: Object) {
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
+      // 响应式定义对象属性的get set
       defineReactive(obj, keys[i])
     }
   }
@@ -155,7 +156,7 @@ export function defineReactive (
 ) {
   // 初始化一个发布-订阅模型
   const dep = new Dep()
-
+  // 获取属性描述符
   const property = Object.getOwnPropertyDescriptor(obj, key)
   // 对象的属性应该是可扩展、可配置的
   if (property && property.configurable === false) {
@@ -175,9 +176,8 @@ export function defineReactive (
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
-      debugger
       const value = getter ? getter.call(obj) : val
-      // 存在依赖的作用域？？？@todo
+      // 依赖收集 @todo
       if (Dep.target) {
         dep.depend()
         if (childOb) {
@@ -190,6 +190,7 @@ export function defineReactive (
       return value
     },
     set: function reactiveSetter (newVal) {
+      // 派发更新 @todo
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {

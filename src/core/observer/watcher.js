@@ -224,6 +224,7 @@ export default class Watcher {
 
   /**
    * Remove self from all dependencies' subscriber list.
+   * 移除事件订阅
    */
   teardown () {
     if (this.active) {

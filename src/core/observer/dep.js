@@ -12,6 +12,7 @@ let uid = 0
  * 发布-订阅模式
  */
 export default class Dep {
+  // 同一时间只能有一个watcher被计算
   static target: ?Watcher;
   id: number;
   subs: Array<Watcher>;
@@ -47,6 +48,7 @@ export default class Dep {
     }
     for (let i = 0, l = subs.length; i < l; i++) {
       // 执行订阅对象批量更新？？？@todo
+      // 每个subs都有update方法
       subs[i].update()
     }
   }

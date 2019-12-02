@@ -4,7 +4,7 @@
 import { noop } from 'shared/util'
 import { handleError } from './error'
 import { isIE, isIOS, isNative } from './env'
-// 微任务？？？@todo
+// 微任务，一般浏览器代码执行顺序：同步任务>微任务>宏任务
 export let isUsingMicroTask = false
 
 const callbacks = []
@@ -39,6 +39,9 @@ let timerFunc
 // completely stops working after triggering a few times... so, if native
 // Promise is available, we will use it:
 /* istanbul ignore next, $flow-disable-line */
+
+// nextTick的实现是利用微任务microTask
+// 优先使用promise > MutationObserver > setInterval > setTimeOut @todo
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   const p = Promise.resolve()
   timerFunc = () => {
@@ -84,9 +87,9 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   }
 }
 /**
- * 
- * @param {回调函数} cb 
- * @param {变量作用域} ctx 
+ *
+ * @param {回调函数} cb
+ * @param {变量作用域} ctx
  */
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve

@@ -44,6 +44,16 @@ export function createElement (
   return _createElement(context, tag, data, children, normalizationType)
 }
 
+/**
+ * 创建元素
+ * @param context
+ * @param tag
+ * @param data
+ * @param children
+ * @param normalizationType
+ * @returns {*}
+ * @private
+ */
 export function _createElement (
   context: Component,
   tag?: string | Class<Component> | Function | Object,

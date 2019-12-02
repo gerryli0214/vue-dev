@@ -48,9 +48,10 @@ export function updateComponentListeners (
   updateListeners(listeners, oldListeners || {}, add, remove, createOnceHandler, vm)
   target = undefined
 }
-
+// 事件混入
 export function eventsMixin (Vue: Class<Component>) {
   const hookRE = /^hook:/
+  // 订阅事件
   Vue.prototype.$on = function (event: string | Array<string>, fn: Function): Component {
     const vm: Component = this
     if (Array.isArray(event)) {
@@ -67,7 +68,7 @@ export function eventsMixin (Vue: Class<Component>) {
     }
     return vm
   }
-
+  // 只执行一次的事件，相当于对回调方法进行在一层的包裹
   Vue.prototype.$once = function (event: string, fn: Function): Component {
     const vm: Component = this
     function on () {
@@ -78,7 +79,7 @@ export function eventsMixin (Vue: Class<Component>) {
     vm.$on(event, on)
     return vm
   }
-
+  // 关闭事件的监听
   Vue.prototype.$off = function (event?: string | Array<string>, fn?: Function): Component {
     const vm: Component = this
     // all
@@ -114,7 +115,7 @@ export function eventsMixin (Vue: Class<Component>) {
     }
     return vm
   }
-
+  // 发布事件
   Vue.prototype.$emit = function (event: string): Component {
     const vm: Component = this
     if (process.env.NODE_ENV !== 'production') {
@@ -135,6 +136,7 @@ export function eventsMixin (Vue: Class<Component>) {
       const args = toArray(arguments, 1)
       const info = `event handler for "${event}"`
       for (let i = 0, l = cbs.length; i < l; i++) {
+        // 触发回调
         invokeWithErrorHandling(cbs[i], vm, args, vm, info)
       }
     }

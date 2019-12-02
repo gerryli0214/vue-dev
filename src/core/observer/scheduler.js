@@ -128,7 +128,7 @@ function flushSchedulerQueue () {
     devtools.emit('flush')
   }
 }
-
+// 调用update钩子
 function callUpdatedHooks (queue) {
   let i = queue.length
   while (i--) {
@@ -186,6 +186,7 @@ export function queueWatcher (watcher: Watcher) {
         flushSchedulerQueue()
         return
       }
+      // 调用nextTick
       nextTick(flushSchedulerQueue)
     }
   }

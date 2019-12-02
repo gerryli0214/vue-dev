@@ -41,6 +41,7 @@ export function invokeWithErrorHandling (
   info: string
 ) {
   let res
+  // 带有捕获异常的触发
   try {
     res = args ? handler.apply(context, args) : handler.call(context)
     if (res && !res._isVue && isPromise(res) && !res._handled) {
