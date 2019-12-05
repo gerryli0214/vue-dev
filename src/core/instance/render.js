@@ -68,6 +68,7 @@ export function renderMixin (Vue: Class<Component>) {
   }
   // 定义vue 原型上的render方法
   Vue.prototype._render = function (): VNode {
+    debugger
     const vm: Component = this
     // render函数来自于组件的option
     const { render, _parentVnode } = vm.$options

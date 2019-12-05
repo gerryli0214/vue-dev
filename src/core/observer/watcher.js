@@ -50,6 +50,7 @@ export default class Watcher {
     isRenderWatcher?: boolean
   ) {
     this.vm = vm
+    debugger
     if (isRenderWatcher) {
       vm._watcher = this
     }
@@ -161,6 +162,7 @@ export default class Watcher {
   /**
    * Subscriber interface.
    * Will be called when a dependency changes.
+   * 依赖改变，会触发watcher的update方法
    */
   update () {
     /* istanbul ignore else */

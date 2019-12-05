@@ -8,12 +8,23 @@
   <script src="../../dist/vue.js"></script>
 </head>
 <body>
-<div id='app'>{{msg}}</div>
+<div id='app'>
+    <div>{{count}}</div>
+    <button @click='add'>按钮</button>
+</div>
 <script>
     var vm = new Vue({
         el: '#app',
         data: {
-            msg: 'Hello World',
+            count: 1,
+        },
+        methods: {
+            add () {
+                this.count++
+                this.$nextTick(() => {
+                    debugger
+                })
+            }
         }
     })
 

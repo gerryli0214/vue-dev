@@ -56,8 +56,9 @@ export function initLifecycle (vm: Component) {
 }
 // vue生命周期混入
 export function lifecycleMixin (Vue: Class<Component>) {
-  // 挂载DOM可能需要走这一步 @todo
+  // 页面挂载DOM都会调用这个方法
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
+    debugger
     const vm: Component = this
     const prevEl = vm.$el
     const prevVnode = vm._vnode
@@ -67,7 +68,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
     // based on the rendering backend used.
     if (!prevVnode) {
       // initial render
-      // 初始化渲染
+      // 执行具体的挂载逻辑
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
     } else {
       // updates
@@ -212,6 +213,7 @@ export function mountComponent (
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
   // 监听当前组件状态，当有数据变化时，更新组件
+  debugger
   new Watcher(vm, updateComponent, noop, {
     before () {
       if (vm._isMounted && !vm._isDestroyed) {

@@ -180,6 +180,7 @@ export function defineReactive (
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       // 依赖收集 @todo
+      debugger
       if (Dep.target) {
         dep.depend()
         if (childOb) {
@@ -243,6 +244,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target[key] = val
     return val
   }
+  // 根据原型上是否有__ob__属性来判断是否是响应式声明的属性
   const ob = (target: any).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(

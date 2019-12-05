@@ -9,7 +9,7 @@ export let isUsingMicroTask = false
 
 const callbacks = []
 let pending = false
-
+// 微任务，在里面调用next-tick的回调
 function flushCallbacks () {
   pending = false
   const copies = callbacks.slice(0)
@@ -93,6 +93,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
  */
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
+  // 回调方法
   callbacks.push(() => {
     if (cb) {
       try {
