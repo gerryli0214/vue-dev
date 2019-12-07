@@ -51,8 +51,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
  * @param vm
  */
 export function initState (vm: Component) {
-  debugger
-  // 初始化组件的watcher
+  // 初始化组件的watcher列表
   vm._watchers = []
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
@@ -170,8 +169,6 @@ function initData (vm: Component) {
 // 获取data数据
 export function getData (data: Function, vm: Component): any {
   // #7573 disable dep collection when invoking data getters
-  // 进栈出栈，主要功能？？？@todo
-  // 锁定当前data执行作用域，防止发生时序问题？？？
   pushTarget()
   try {
     // 调用在属性合并时，返回的data

@@ -18,7 +18,6 @@ export function initMixin (Vue: Class<Component>) {
     const vm: Component = this
     // a uid
     vm._uid = uid++
-
     let startTag, endTag
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -52,7 +51,7 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
-    // 初始化options
+    // 初始化组件生命周期标志位
     initLifecycle(vm)
     // 初始化组件事件侦听
     initEvents(vm)

@@ -70,6 +70,7 @@ Vue.prototype.$mount = function (
        *  2.将ast tree转换成render语法字符串
        *  3.生成render方法
        */
+      debugger
       const { render, staticRenderFns } = compileToFunctions(template, {
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,

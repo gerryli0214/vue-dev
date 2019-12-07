@@ -42,7 +42,6 @@ export class Observer {
   vmCount: number; // number of vms that have this object as root $data
 
   constructor (value: any) {
-    debugger
     this.value = value
     // 实例化一个发布-订阅模型
     this.dep = new Dep()

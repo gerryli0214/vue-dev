@@ -51,9 +51,11 @@ export default class Watcher {
   ) {
     this.vm = vm
     debugger
+    // 是渲染的watcher @todo
     if (isRenderWatcher) {
       vm._watcher = this
     }
+    // 将vm添加到组件的_watchers队列中
     vm._watchers.push(this)
     // options
     if (options) {
@@ -73,6 +75,7 @@ export default class Watcher {
     this.newDeps = []
     this.depIds = new Set()
     this.newDepIds = new Set()
+    // updateComponents
     this.expression = process.env.NODE_ENV !== 'production'
       ? expOrFn.toString()
       : ''
@@ -98,6 +101,7 @@ export default class Watcher {
 
   /**
    * Evaluate the getter, and re-collect dependencies.
+   * 执行更新组件的方法，先将当前要执行的watcher推入到执行队列中 @todo
    */
   get () {
     pushTarget(this)
