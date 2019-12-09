@@ -106,6 +106,7 @@ export function mergeDataOrFn (
       )
     }
   } else {
+    // 对于data数据的合并，利用闭包，返回一个function，参数引用父级作用域参数
     return function mergedInstanceDataFn () {
       // instance merge
       const instanceData = typeof childVal === 'function'
@@ -415,7 +416,7 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
 /**
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.
- * 合并属性
+ * 合并构造函数原型上的属性 && 实例化时的属性
  */
 export function mergeOptions (
   parent: Object,
@@ -457,9 +458,11 @@ export function mergeOptions (
 
   const options = {}
   let key
+  // 默认是构造函数原型上的属性方法
   for (key in parent) {
     mergeField(key)
   }
+  // 默认是用户定义的属性方法
   for (key in child) {
     if (!hasOwn(parent, key)) {
       mergeField(key)

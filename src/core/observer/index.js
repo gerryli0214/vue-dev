@@ -179,7 +179,6 @@ export function defineReactive (
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       // 依赖收集 @todo
-      debugger
       if (Dep.target) {
         dep.depend()
         if (childOb) {
@@ -194,7 +193,6 @@ export function defineReactive (
     set: function reactiveSetter (newVal) {
       // 派发更新 @todo
       // 获取到value数据
-      debugger
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {

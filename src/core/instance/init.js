@@ -16,6 +16,7 @@ export function initMixin (Vue: Class<Component>) {
   // 实例化Vue调用的构造方法
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
+    debugger
     // a uid
     vm._uid = uid++
     let startTag, endTag
@@ -35,7 +36,8 @@ export function initMixin (Vue: Class<Component>) {
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
-    } else { // 合并vue属性
+    } else { 
+      // 合并vue构造函数 && 实例化传入的属性
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -44,7 +46,7 @@ export function initMixin (Vue: Class<Component>) {
     }
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
-      // 初始化proxy拦截器
+      // 初始化proxy拦截器，拦截一些异常的变量声明、使用
       initProxy(vm)
     } else {
       vm._renderProxy = vm

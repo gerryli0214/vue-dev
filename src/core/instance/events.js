@@ -10,6 +10,7 @@ import {
 import { updateListeners } from '../vdom/helpers/index'
 // 初始化组件上的事件侦听
 export function initEvents (vm: Component) {
+  // 组件上的事件对象
   vm._events = Object.create(null)
   vm._hasHookEvent = false
   // init parent attached events
