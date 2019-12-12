@@ -48,6 +48,7 @@ export class Observer {
     this.vmCount = 0
     // 给监听对象定义一个__ob__属性，属性值为this,指向当前实例
     // 存在该属性的对象，就是响应式对象
+    // 默认该属性时放到Object、Array上的
     def(value, '__ob__', this)
     // 数组类型
     if (Array.isArray(value)) {

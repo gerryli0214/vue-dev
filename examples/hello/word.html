@@ -10,6 +10,7 @@
 <body>
 <div id='app'>
     <div>{{count}}</div>
+    <test></test>
     <button @click='add'>按钮</button>
 </div>
 <script>
@@ -17,6 +18,16 @@
         el: '#app',
         data: {
             count: 1,
+        },
+        components: {
+            test: {
+                data () { 
+                    return {
+                        msg: 'hello world'
+                    }
+                },
+                template: '<h1>{{msg}}</h1>'
+            }
         },
         methods: {
             add () {

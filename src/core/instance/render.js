@@ -91,6 +91,7 @@ export function renderMixin (Vue: Class<Component>) {
       // There's no need to maintain a stack because all render fns are called
       // separately from one another. Nested component's render fns are called
       // when parent component is patched.
+      // 当前组件渲染的实例作用域
       currentRenderingInstance = vm
       // 调用render方法，自己的独特的render方法， 传入createElement参数，生成vNode
       vnode = render.call(vm._renderProxy, vm.$createElement)
@@ -110,6 +111,7 @@ export function renderMixin (Vue: Class<Component>) {
         vnode = vm._vnode
       }
     } finally {
+      // 置空当前渲染的实例作用域
       currentRenderingInstance = null
     }
     // if the returned array contains only a single node, allow it

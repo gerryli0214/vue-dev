@@ -15,10 +15,12 @@ export function initExtend (Vue: GlobalAPI) {
 
   /**
    * Class inheritance
+   * 处理组件继承构造方法属性
    */
   Vue.extend = function (extendOptions: Object): Function {
     extendOptions = extendOptions || {}
     const Super = this
+    // 父级实例cid
     const SuperId = Super.cid
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
     if (cachedCtors[SuperId]) {
@@ -29,17 +31,21 @@ export function initExtend (Vue: GlobalAPI) {
     if (process.env.NODE_ENV !== 'production' && name) {
       validateComponentName(name)
     }
-
+    // 定义vue初始化方法
     const Sub = function VueComponent (options) {
       this._init(options)
     }
+    // super -> this -> Vue 继承Vue构造方法中的属性
     Sub.prototype = Object.create(Super.prototype)
+    // 指定子组件的构造方法为Sub -> VueComponent
     Sub.prototype.constructor = Sub
     Sub.cid = cid++
+    // 合并组件属性
     Sub.options = mergeOptions(
       Super.options,
       extendOptions
     )
+    // 定义父级作用域
     Sub['super'] = Super
 
     // For props and computed properties, we define the proxy getters on

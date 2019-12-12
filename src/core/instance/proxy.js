@@ -52,7 +52,7 @@ if (process.env.NODE_ENV !== 'production') {
       }
     })
   }
-
+  
   const hasHandler = {
     has (target, key) {
       const has = key in target

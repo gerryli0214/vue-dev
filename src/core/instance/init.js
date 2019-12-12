@@ -102,10 +102,11 @@ export function initInternalComponent (vm: Component, options: InternalComponent
 export function resolveConstructorOptions (Ctor: Class<Component>) {
   // Ctor -> Vue的构造函数
   let options = Ctor.options
-  // 构造函数上的super关键字，是指什么?? @todo
+  // 创建子组件时调用，super默认指向根上一层作用域构造函数
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
+    // 检测构造属性是否发生改变，如果发生改变，则需要重新执行合并策略 @todo
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.

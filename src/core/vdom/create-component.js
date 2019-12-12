@@ -33,6 +33,7 @@ import {
 } from 'weex/runtime/recycle-list/render-component-template'
 
 // inline hooks to be invoked on component VNodes during patch
+// 渲染组件相关钩子
 const componentVNodeHooks = {
   init (vnode: VNodeWithData, hydrating: boolean): ?boolean {
     if (
@@ -97,7 +98,7 @@ const componentVNodeHooks = {
 }
 
 const hooksToMerge = Object.keys(componentVNodeHooks)
-
+// 创建组件
 export function createComponent (
   Ctor: Class<Component> | Function | Object | void,
   data: ?VNodeData,
@@ -108,7 +109,8 @@ export function createComponent (
   if (isUndef(Ctor)) {
     return
   }
-
+  debugger
+  // 获取Vue基础构造函数，在initGlobal中，将vue基础构造方法赋值给_base属性
   const baseCtor = context.$options._base
 
   // plain options object: turn it into a constructor
@@ -183,10 +185,13 @@ export function createComponent (
   }
 
   // install component management hooks onto the placeholder node
+  // 初始化组件的钩子函数 @todo??
   installComponentHooks(data)
 
   // return a placeholder vnode
+  // 体现了组件名称在这里面的作用
   const name = Ctor.options.name || tag
+  // 创建vnode
   const vnode = new VNode(
     `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
     data, undefined, undefined, undefined, context,
@@ -204,7 +209,7 @@ export function createComponent (
 
   return vnode
 }
-
+// 创建组件的作用域，执行组件的_init方法，同vue实例化过程
 export function createComponentInstanceForVnode (
   vnode: any, // we know it's MountedComponentVNode but flow doesn't
   parent: any, // activeInstance in lifecycle state
@@ -220,6 +225,7 @@ export function createComponentInstanceForVnode (
     options.render = inlineTemplate.render
     options.staticRenderFns = inlineTemplate.staticRenderFns
   }
+  // 实例化组件的构造方法
   return new vnode.componentOptions.Ctor(options)
 }
 
