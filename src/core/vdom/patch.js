@@ -141,6 +141,7 @@ export function createPatchFunction (backend) {
     }
     // 判断插入的节点是否是根节点
     vnode.isRootInsert = !nested // for transition enter check
+    // createComponent有返回值，是创建组件的方法，没有返回值，则继续走下面的方法
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
       return
     }
@@ -162,7 +163,7 @@ export function createPatchFunction (backend) {
           )
         }
       }
-
+      // 根据虚拟DOM转换成真实DOM
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
@@ -189,11 +190,12 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
-        // 创建子节点
+        // 递归创建子节点
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
+        // 从底向上，依次插入
         insert(parentElm, vnode.elm, refElm)
       }
 
@@ -211,6 +213,7 @@ export function createPatchFunction (backend) {
   // 创建组件，如果节点类型是组件，则直接走创建组件的方法
   function createComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
     let i = vnode.data
+    // 判断是否存在组件的生命周期，存在，即需要走创建组件的流程
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
       if (isDef(i = i.hook) && isDef(i = i.init)) {
@@ -704,7 +707,7 @@ export function createPatchFunction (backend) {
       return node.nodeType === (vnode.isComment ? 8 : 3)
     }
   }
-  // 渲染DOM方法
+  // 挂载DOM方法
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
@@ -753,11 +756,14 @@ export function createPatchFunction (backend) {
         }
 
         // replacing existing element
+        // 获取老旧节点
         const oldElm = oldVnode.elm
         // 获取老旧节点的父节点
         const parentElm = nodeOps.parentNode(oldElm)
 
         // create new node
+        // 将虚拟DOM转换成真实DOM
+        // 传入父级节点，一级级添加
         createElm(
           vnode,
           insertedVnodeQueue,
@@ -799,6 +805,7 @@ export function createPatchFunction (backend) {
         }
 
         // destroy old node
+        // 移除老旧节点
         if (isDef(parentElm)) {
           removeVnodes([oldVnode], 0, 0)
         } else if (isDef(oldVnode.tag)) {

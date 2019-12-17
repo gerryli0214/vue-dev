@@ -22,9 +22,12 @@ export let activeInstance: any = null
 export let isUpdatingChildComponent: boolean = false
 
 export function setActiveInstance(vm: Component) {
+  // 前一个激活的实例
   const prevActiveInstance = activeInstance
+  // 当前激活的实例
   activeInstance = vm
   return () => {
+    // 将前一个激活的实例设置成当前激活的实例 @todo
     activeInstance = prevActiveInstance
   }
 }
@@ -56,16 +59,20 @@ export function initLifecycle (vm: Component) {
 }
 // vue生命周期混入
 export function lifecycleMixin (Vue: Class<Component>) {
-  // 页面挂载DOM都会调用这个方法
+  // 将虚拟DOM转换成真实DOM，并挂载到页面中
+  // 解析模板生成的render函数，会返回一个vnode
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el
+    // 实例上的vnode
     const prevVnode = vm._vnode
     // 设置当前激活的作用域
     const restoreActiveInstance = setActiveInstance(vm)
+    // 将vnode挂载到当前实例上
     vm._vnode = vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
+    // 判断是更新还是插入，如果实例上有vnode，就是更新，否则是插入
     if (!prevVnode) {
       // initial render
       // 执行具体的挂载逻辑

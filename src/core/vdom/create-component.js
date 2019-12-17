@@ -35,6 +35,7 @@ import {
 // inline hooks to be invoked on component VNodes during patch
 // 渲染组件相关钩子
 const componentVNodeHooks = {
+  // 组件初始化方法
   init (vnode: VNodeWithData, hydrating: boolean): ?boolean {
     if (
       vnode.componentInstance &&
@@ -45,10 +46,12 @@ const componentVNodeHooks = {
       const mountedNode: any = vnode // work around flow
       componentVNodeHooks.prepatch(mountedNode, mountedNode)
     } else {
+      // 实例化组件
       const child = vnode.componentInstance = createComponentInstanceForVnode(
         vnode,
         activeInstance
       )
+      //挂载组件
       child.$mount(hydrating ? vnode.elm : undefined, hydrating)
     }
   },
@@ -109,12 +112,12 @@ export function createComponent (
   if (isUndef(Ctor)) {
     return
   }
-  debugger
   // 获取Vue基础构造函数，在initGlobal中，将vue基础构造方法赋值给_base属性
   const baseCtor = context.$options._base
 
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
+    // 将组件的配置，合并到构造方法中，extend是定义在Vue构造方法中的
     Ctor = baseCtor.extend(Ctor)
   }
 
@@ -185,11 +188,11 @@ export function createComponent (
   }
 
   // install component management hooks onto the placeholder node
-  // 初始化组件的钩子函数 @todo??
+  // 初始化组件的钩子函数
   installComponentHooks(data)
 
   // return a placeholder vnode
-  // 体现了组件名称在这里面的作用
+  // 组件显式的定义了名称，以显式定义的为准，否则以tag名称为准
   const name = Ctor.options.name || tag
   // 创建vnode
   const vnode = new VNode(
@@ -228,7 +231,7 @@ export function createComponentInstanceForVnode (
   // 实例化组件的构造方法
   return new vnode.componentOptions.Ctor(options)
 }
-
+// 初始化组件的生命周期钩子
 function installComponentHooks (data: VNodeData) {
   const hooks = data.hook || (data.hook = {})
   for (let i = 0; i < hooksToMerge.length; i++) {

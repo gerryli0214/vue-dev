@@ -106,7 +106,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
-    // 检测构造属性是否发生改变，如果发生改变，则需要重新执行合并策略 @todo
+    // 检测构造属性是否发生改变，如果发生改变，则需要重新执行合并策略
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.

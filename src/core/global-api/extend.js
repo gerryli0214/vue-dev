@@ -31,7 +31,7 @@ export function initExtend (Vue: GlobalAPI) {
     if (process.env.NODE_ENV !== 'production' && name) {
       validateComponentName(name)
     }
-    // 定义vue初始化方法
+    // 定义vue初始化方法，和实例化Vue走同一个路线
     const Sub = function VueComponent (options) {
       this._init(options)
     }
@@ -59,6 +59,7 @@ export function initExtend (Vue: GlobalAPI) {
     }
 
     // allow further extension/mixin/plugin usage
+    // 子组件的实例，保持对vue构造方法的引用
     Sub.extend = Super.extend
     Sub.mixin = Super.mixin
     Sub.use = Super.use
