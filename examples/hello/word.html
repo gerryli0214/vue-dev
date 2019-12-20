@@ -9,8 +9,8 @@
 </head>
 <body>
 <div id='app'>
-    <div>{{count}}</div>
-    <test></test>
+    <div>{{count}}{{countAdd}}</div>
+    <test world="smile"></test>
     <button @click='add'>按钮</button>
 </div>
 <script>
@@ -21,12 +21,27 @@
         },
         components: {
             test: {
-                data () { 
-                    return {
-                        msg: 'hello world'
+                props: {
+                    world: {
+                        type: String
                     }
                 },
-                template: '<h1>{{msg}}</h1>'
+                data () {
+                    return {
+                        hello: 'hello'
+                    }
+                },
+                template: '<h1><span>{{hello}}</span><span>{{world}}</span></h1>'
+            }
+        },
+        computed: {
+            countAdd () {
+                return this.count++
+            }
+        },
+        watch: {
+            count (val) {
+                console.log(val)
             }
         },
         methods: {

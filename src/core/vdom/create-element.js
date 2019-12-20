@@ -45,7 +45,7 @@ export function createElement (
 }
 
 /**
- * 创建元素 || 组件
+ * 生成vnode
  * @param context
  * @param tag
  * @param data
@@ -61,6 +61,7 @@ export function _createElement (
   children?: any,
   normalizationType?: number
 ): VNode | Array<VNode> {
+  debugger
   if (isDef(data) && isDef((data: any).__ob__)) {
     process.env.NODE_ENV !== 'production' && warn(
       `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` +

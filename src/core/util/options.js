@@ -262,6 +262,7 @@ strats.computed = function (
   key: string
 ): ?Object {
   if (childVal && process.env.NODE_ENV !== 'production') {
+    // 检测computed数据合法性
     assertObjectType(key, childVal, vm)
   }
   if (!parentVal) return childVal

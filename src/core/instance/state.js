@@ -53,6 +53,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   // 初始化组件的watcher列表
   vm._watchers = []
+  debugger
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
@@ -182,7 +183,7 @@ export function getData (data: Function, vm: Component): any {
 }
 
 const computedWatcherOptions = { lazy: true }
-
+// 初始化computed
 function initComputed (vm: Component, computed: Object) {
   // $flow-disable-line
   const watchers = vm._computedWatchers = Object.create(null)
@@ -190,7 +191,9 @@ function initComputed (vm: Component, computed: Object) {
   const isSSR = isServerRendering()
 
   for (const key in computed) {
+    // 用户自己声明的computed方法
     const userDef = computed[key]
+    // 将自己声明的computed方法当做getter,这样通过属性取值时，就可以直接获取到属性的返回值
     const getter = typeof userDef === 'function' ? userDef : userDef.get
     if (process.env.NODE_ENV !== 'production' && getter == null) {
       warn(
@@ -223,7 +226,7 @@ function initComputed (vm: Component, computed: Object) {
     }
   }
 }
-
+// 声明computed
 export function defineComputed (
   target: any,
   key: string,
@@ -252,14 +255,18 @@ export function defineComputed (
       )
     }
   }
+  // 在组件实例上声明computed对象中的属性名，可以通过this.xxx直接访问属性
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
-
+// 获取computed的计算方法,作为属性的getter函数
 function createComputedGetter (key) {
   return function computedGetter () {
+    debugger
+    // 获取实例上的computed属性的watcher实例
     const watcher = this._computedWatchers && this._computedWatchers[key]
     if (watcher) {
       if (watcher.dirty) {
+        // 调用get方法，获取到computed的值
         watcher.evaluate()
       }
       if (Dep.target) {
@@ -300,10 +307,11 @@ function initMethods (vm: Component, methods: Object) {
         )
       }
     }
+    // 将方法绑定到实例上
     vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm)
   }
 }
-
+// watch的初始化
 function initWatch (vm: Component, watch: Object) {
   for (const key in watch) {
     const handler = watch[key]
@@ -371,6 +379,7 @@ export function stateMixin (Vue: Class<Component>) {
     options = options || {}
     options.user = true
     const watcher = new Watcher(vm, expOrFn, cb, options)
+    // immediate修饰符，true -> 立即执行
     if (options.immediate) {
       try {
         cb.call(vm, watcher.value)

@@ -60,7 +60,6 @@ export function initLifecycle (vm: Component) {
 // vue生命周期混入
 export function lifecycleMixin (Vue: Class<Component>) {
   // 将虚拟DOM转换成真实DOM，并挂载到页面中
-  // 解析模板生成的render函数，会返回一个vnode
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el

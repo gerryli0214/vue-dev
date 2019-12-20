@@ -23,6 +23,7 @@ let uid = 0
  * and fires callback when the expression value changes.
  * This is used for both the $watch() api and directives.
  */
+// Watcher里面主要存储观察者对象的信息，包括watch,updateComponent的一些回调方法
 export default class Watcher {
   vm: Component;
   expression: string;
@@ -51,11 +52,11 @@ export default class Watcher {
   ) {
     this.vm = vm
     debugger
-    // 是渲染的watcher @todo
+    // 渲染组件的watcher，通常computed 和 watch 也会实例化watcher
     if (isRenderWatcher) {
       vm._watcher = this
     }
-    // 将vm添加到组件的_watchers队列中
+    // 组件上的watcher队列
     vm._watchers.push(this)
     // options
     if (options) {
@@ -75,14 +76,17 @@ export default class Watcher {
     this.newDeps = []
     this.depIds = new Set()
     this.newDepIds = new Set()
-    // updateComponents
+    // updateComponents, watch, computed callback function
     this.expression = process.env.NODE_ENV !== 'production'
       ? expOrFn.toString()
       : ''
     // parse expression for getter
+    // expression是function的情况：computed，mountComponent
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
+      // watch走这个分支，watch传入的expression是字符串
+      // 将字符串按照.进行字符串分割解析，exp: 'a.b.c' 获取到具体对象的值
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = noop
@@ -104,6 +108,7 @@ export default class Watcher {
    * 执行更新组件的方法，先将当前要执行的watcher推入到执行队列中 @todo
    */
   get () {
+    // 设置当前处理的Watcher
     pushTarget(this)
     let value
     const vm = this.vm
@@ -118,6 +123,7 @@ export default class Watcher {
     } finally {
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
+      // 深度监听
       if (this.deep) {
         traverse(value)
       }

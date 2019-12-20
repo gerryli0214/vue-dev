@@ -68,7 +68,7 @@ export function renderMixin (Vue: Class<Component>) {
   Vue.prototype.$nextTick = function (fn: Function) {
     return nextTick(fn, this)
   }
-  // 定义vue 原型上的render方法
+  // 定义vue 原型上的render方法,用于生成vnode
   Vue.prototype._render = function (): VNode {
     const vm: Component = this
     // render函数来自于组件的option
