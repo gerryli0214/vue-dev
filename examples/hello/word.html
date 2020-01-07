@@ -9,15 +9,18 @@
 </head>
 <body>
 <div id='app'>
-    <div>{{count}}{{countAdd}}</div>
-    <test world="smile"></test>
-    <button @click='add'>按钮</button>
+  <div>{{count}}</div>
+  <div>{{countAdd}}</div>
+  <test world="smile"></test>
+  <button @click='add'>按钮</button>
 </div>
 <script>
     var vm = new Vue({
         el: '#app',
         data: {
             count: 1,
+            firstName: 'li',
+            lastName: 'gerry'
         },
         components: {
             test: {
@@ -37,6 +40,16 @@
         computed: {
             countAdd () {
                 return this.count++
+            },
+            fullName: {
+                get () {
+                  return this.firstName + ' ' + this.lastName
+                },
+                set: function (newValue) {
+                    var names = newValue.split(' ')
+                    this.firstName = names[0]
+                    this.lastName = names[names.length - 1]
+                }
             }
         },
         watch: {

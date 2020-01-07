@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    .toast{
+      position: absolute;
+      left: 45%;
+      top: 10%;
+      width: 10%;
+      height: 5%;
+      background: #ccc;
+      border-radius: 5px;
+    }
+  </style>
+  <title>Hello World</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+</head>
+<body>
+<div id='app' v-test>
+  <button @click="handleClick">我是按钮</button>
+</div>
+<script>
+function vuePlugins (Vue) {
+    Vue.directive('test', {
+        bind (el) {
+            el.addEventListener('click', function (e) {
+                alert('hello world')
+            })
+        }
+    })
+}
+// const vuePlugins = {
+//     install (Vue) {
+//         Vue.directive('test', {
+//             bind (el) {
+//                 el.addEventListener('click', function (e) {
+//                     alert('hello world')
+//                 })
+//             }
+//         })
+//     }
+// }
+Vue.use(vuePlugins)
+let toast = {
+    props: {
+        show: {
+            type: Boolean,
+            default: false
+        },
+        msg: {
+            type: String
+        }
+    },
+    template: '<div v-show="show" class="toast">{{msg}}</div>'
+}
+// 获取toast构造实例
+const TempConstructor = Vue.extend(toast)
+// 实例化toast
+let instance = new TempConstructor()
+// 手动创建toast的挂载容器
+let div = document.createElement('div')
+// 解析挂载toast
+instance.$mount(div)
+// 将toast挂载到body中
+document.body.append(instance.$el)
+// 将toast的调用封装成一个方法，挂载到Vue的原型上
+Vue.prototype.$toast = function (msg) {
+    instance.show = true
+    instance.msg = msg
+    setTimeout(() => {
+        instance.show = false
+    }, 5000)
+}
+var vm = new Vue({
+    el: '#app',
+    data: {
+        msg: 'Hello World',
+        a: 11
+    },
+    methods: {
+        test () {
+            console.log('这是一个主方法')
+        },
+        handleClick () {
+            this.$toast('hello world')
+        }
+    },
+    created() {
+        console.log('执行了主组件上的created方法')
+    },
+})
+</script>
+</body>
+</html>

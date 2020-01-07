@@ -13,6 +13,7 @@ export function initUse (Vue: GlobalAPI) {
     // additional parameters
     const args = toArray(arguments, 1)
     args.unshift(this)
+    // vue插件形式可以是对象，也可以是方法，默认会传递一个Vue的构造方法作为参数
     if (typeof plugin.install === 'function') {
       plugin.install.apply(plugin, args)
     } else if (typeof plugin === 'function') {

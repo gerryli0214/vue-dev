@@ -179,6 +179,7 @@ export function defineReactive (
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
+      debugger
       // 每次取值时，如果存在依赖的target对象，将watcher对象添加到订阅列表中，当数据发生改变时，通知watcher进行更新
       if (Dep.target) {
         // 将watcher加入到订阅列表
