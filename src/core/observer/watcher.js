@@ -51,7 +51,6 @@ export default class Watcher {
     isRenderWatcher?: boolean
   ) {
     this.vm = vm
-    debugger
     // 渲染组件的watcher，通常computed 和 watch 也会实例化watcher
     if (isRenderWatcher) {
       vm._watcher = this
@@ -139,6 +138,7 @@ export default class Watcher {
    */
   addDep (dep: Dep) {
     const id = dep.id
+    // 防止数据的重复订阅
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
       this.newDeps.push(dep)

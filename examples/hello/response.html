@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hello World</title>
+  <script src="../../dist/vue.js"></script>
+</head>
+<body>
+<div id='app'>
+  <div>msg: {{msg}}</div>
+  <div>count: {{count}}</div>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: 'Hello World',
+            count: 0
+        },
+        computed: {
+            countAdd () {
+                return this.count++
+            }
+        },
+        watch: {
+            count (newVal) {
+                console.log(newVal)
+            }
+        },
+        methods: {
+            test () {
+                console.log('这是一个主方法')
+            }
+        }
+    })
+</script>
+</body>
+</html>

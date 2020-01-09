@@ -9,9 +9,11 @@
 </head>
 <body>
 <div id='app'>
-  <div>{{count}}</div>
-  <div>{{countAdd(1)}}</div>
-  <test world="smile"></test>
+  <test :world="item" v-for = 'item in smile'>
+    <template slot="hello" slot-scope="scope">
+      {{scope}}
+    </template>
+  </test>
   <button @click='add'>按钮</button>
 </div>
 <script>
@@ -20,13 +22,14 @@
         data: {
             count: 1,
             firstName: 'li',
-            lastName: 'gerry'
+            lastName: 'gerry',
+            smile: [{type: 1}, {type: 2}]
         },
         components: {
             test: {
                 props: {
                     world: {
-                        type: String
+                        type: [String, Number, Object]
                     }
                 },
                 data () {
@@ -34,18 +37,18 @@
                         hello: 'hello'
                     }
                 },
-                template: '<h1><span>{{hello}}</span><span>{{world}}</span></h1>'
+                template: '<h1>' +
+                    '<slot :row="world" name="hello"></slot>' +
+                  '</h1>'
             }
         },
         computed: {
             countAdd () {
-                return function (count) {
-                    return count++
-                }
+                return this.count++
             },
             fullName: {
                 get () {
-                  return this.firstName + ' ' + this.lastName
+                    return this.firstName + ' ' + this.lastName
                 },
                 set: function (newValue) {
                     var names = newValue.split(' ')
@@ -62,9 +65,10 @@
         methods: {
             add () {
                 this.count++
-                this.$nextTick(() => {
-                    debugger
-                })
+                this.smile++
+                // this.$nextTick(() => {
+                // debugger
+                // })
             }
         }
     })

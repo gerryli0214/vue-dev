@@ -194,7 +194,7 @@ export function defineReactive (
       return value
     },
     set: function reactiveSetter (newVal) {
-      // 派发更新 @todo
+      // 派发更新
       // 获取到value数据
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
@@ -214,7 +214,7 @@ export function defineReactive (
       }
       // 重新更新下数据依赖
       childOb = !shallow && observe(newVal)
-      // 通知数据更新？？？@todo
+      // 通知数据更新
       dep.notify()
     }
   })

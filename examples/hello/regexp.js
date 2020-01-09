@@ -10,7 +10,6 @@ let str = `
 var test = '==abc==cc=='
 var testPattern = /(?<=[=]{2})(\S+)(?=[=]{2})/g
 var testResult = test.match(testPattern)
-debugger
 // 字面量方式
 let normalPattern = /span/ig
 // 调用正则构造方法
@@ -34,7 +33,9 @@ let matchSpanTextDescribe = /(?<=<span>)(\S+)+?(?=<\/span>)/g
 
 let ignoreEmpty = /&nbsp;+(![\u4e00-\u9fa5])/g
 
-let result = str.match(ignoreEmpty)
+let matchWords = /(?<!\w)(hello)(?!\w)/g
+
+let result = str.match(matchWords)
 
 console.log(result)
 
