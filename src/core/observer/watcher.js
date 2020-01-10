@@ -50,6 +50,7 @@ export default class Watcher {
     options?: ?Object,
     isRenderWatcher?: boolean
   ) {
+    debugger
     this.vm = vm
     // 渲染组件的watcher，通常computed 和 watch 也会实例化watcher
     if (isRenderWatcher) {
@@ -104,7 +105,7 @@ export default class Watcher {
 
   /**
    * Evaluate the getter, and re-collect dependencies.
-   * 执行更新组件的方法，先将当前要执行的watcher推入到执行队列中 @todo
+   * 执行更新组件的方法，先将当前要执行的watcher推入到执行队列
    */
   get () {
     // 设置当前处理的Watcher

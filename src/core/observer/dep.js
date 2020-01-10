@@ -38,13 +38,11 @@ export default class Dep {
 
   notify () {
     // stabilize the subscriber list first
-    // 稳定订阅列表，返回一个数组内容拷贝？@todo
     const subs = this.subs.slice()
     if (process.env.NODE_ENV !== 'production' && !config.async) {
       // subs aren't sorted in scheduler if not running async
       // we need to sort them now to make sure they fire in correct
       // order
-      // 确定订阅者的执行次序
       subs.sort((a, b) => a.id - b.id)
     }
     for (let i = 0, l = subs.length; i < l; i++) {
