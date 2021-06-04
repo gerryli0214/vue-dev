@@ -52,7 +52,7 @@ export class Observer {
     def(value, '__ob__', this)
     // 数组类型
     if (Array.isArray(value)) {
-      // 存在原型 __proto__,重写数组原型上的方法
+      // 存在原型 __proto__,重写数组原型上的方法，处理数组响应式
       if (hasProto) {
         protoAugment(value, arrayMethods)
       } else {
@@ -62,7 +62,7 @@ export class Observer {
       // 响应式监听数组的变化
       this.observeArray(value)
     } else {
-      // 如果值的类型为Object,则响应式的声明对象属性
+      // 如果值的类型为Object,则响应式的声明对象属性，处理对象响应式
       this.walk(value)
     }
   }
@@ -156,7 +156,7 @@ export function defineReactive (
   customSetter?: ?Function,
   shallow?: boolean
 ) {
-  // 初始化一个发布-订阅模型，每个对象都包含一个dep实例
+  // 初始化一个发布-订阅模型，每个key都包含一个dep实例
   const dep = new Dep()
   // 获取属性描述符
   const property = Object.getOwnPropertyDescriptor(obj, key)
@@ -172,18 +172,19 @@ export function defineReactive (
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-  // 如果val值存在Object，则需要侦听val值的变化
+  // 递归处理val为对象的操作
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
-      // 每次取值时，如果存在依赖的target对象，将watcher对象添加到订阅列表中，当数据发生改变时，通知watcher进行更新
+      // 依赖收集
       if (Dep.target) {
-        // 将watcher加入到订阅列表
+        // dep watcher互相绑定收集
         dep.depend()
         if (childOb) {
+          // 对嵌套对象进行收集
           childOb.dep.depend()
           if (Array.isArray(value)) {
             dependArray(value)
@@ -297,6 +298,7 @@ export function del (target: Array<any> | Object, key: any) {
 /**
  * Collect dependencies on array elements when the array is touched, since
  * we cannot intercept array element access like property getters.
+ * 处理数组选项有对象的情况，对其进行依赖收集
  */
 function dependArray (value: Array<any>) {
   for (let e, i = 0, l = value.length; i < l; i++) {

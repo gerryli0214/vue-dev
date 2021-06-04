@@ -53,7 +53,6 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   // 初始化组件的watcher列表
   vm._watchers = []
-  debugger
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
@@ -331,6 +330,7 @@ function createWatcher (
   handler: any,
   options?: Object
 ) {
+  // 获取处理回调函数
   if (isPlainObject(handler)) {
     options = handler
     handler = handler.handler
@@ -366,17 +366,25 @@ export function stateMixin (Vue: Class<Component>) {
 
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
-  // 初始化根组件的$watch
+  /**
+   * 
+   * @param {*} expOrFn 监听字符
+   * @param {*} cb 回调
+   * @param {*} options 
+   * @returns 
+   */
   Vue.prototype.$watch = function (
     expOrFn: string | Function,
     cb: any,
     options?: Object
   ): Function {
     const vm: Component = this
+    // hack手动调用$watch
     if (isPlainObject(cb)) {
       return createWatcher(vm, expOrFn, cb, options)
     }
     options = options || {}
+    // 标记这是一个用户watcher
     options.user = true
     const watcher = new Watcher(vm, expOrFn, cb, options)
     // immediate修饰符，true -> 立即执行
@@ -387,6 +395,7 @@ export function stateMixin (Vue: Class<Component>) {
         handleError(error, vm, `callback for immediate watcher "${watcher.expression}"`)
       }
     }
+    // 返回一个解除监听的方法
     return function unwatchFn () {
       watcher.teardown()
     }

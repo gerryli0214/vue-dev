@@ -15,6 +15,7 @@ const idToTemplate = cached(id => {
 })
 
 const mount = Vue.prototype.$mount
+// 复写$mount
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
@@ -72,9 +73,11 @@ Vue.prototype.$mount = function (
        */
       debugger
       const { render, staticRenderFns } = compileToFunctions(template, {
+        // 标记元素在HTML模板字符串的开始和结束位置
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,
         shouldDecodeNewlinesForHref,
+        // 界定符
         delimiters: options.delimiters,
         comments: options.comments
       }, this)

@@ -31,6 +31,7 @@ function preTransformNode (el: ASTElement, options: CompilerOptions) {
     }
 
     let typeBinding
+    // 获取input的type属性
     if (map[':type'] || map['v-bind:type']) {
       typeBinding = getBindingAttr(el, 'type')
     }

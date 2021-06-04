@@ -12,8 +12,12 @@ export function initProvide (vm: Component) {
       : provide
   }
 }
-
+/**
+ * 解析inject选项
+ * @param {*} vm 
+ */
 export function initInjections (vm: Component) {
+  // 从配置项上解析inject
   const result = resolveInject(vm.$options.inject, vm)
   if (result) {
     // 如果有注入的依赖属性，停止数据侦听，初始化注入内容？@todo
@@ -30,6 +34,7 @@ export function initInjections (vm: Component) {
           )
         })
       } else {
+        // 解析结果响应式处理
         defineReactive(vm, key, result[key])
       }
     })

@@ -113,11 +113,12 @@ export function lifecycleMixin (Vue: Class<Component>) {
     vm._isBeingDestroyed = true
     // remove self from parent
     const parent = vm.$parent
+    // 将自己从父组件中移除
     if (parent && !parent._isBeingDestroyed && !vm.$options.abstract) {
       remove(parent.$children, vm)
     }
     // teardown watchers
-    // 移除监听
+    // 移除watcher
     if (vm._watcher) {
       vm._watcher.teardown()
     }
@@ -210,6 +211,7 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
+    // _render将组件变成vnode
     updateComponent = () => {
       vm._update(vm._render(), hydrating)
     }

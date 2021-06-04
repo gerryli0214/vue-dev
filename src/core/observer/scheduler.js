@@ -70,6 +70,7 @@ if (inBrowser && !isIE) {
  */
 function flushSchedulerQueue () {
   currentFlushTimestamp = getNow()
+  // 表示现在watcher队列正在被刷新
   flushing = true
   let watcher, id
 
@@ -83,10 +84,13 @@ function flushSchedulerQueue () {
   //    its watchers can be skipped.
   // 组件更新从父级子级
   // 组件初始化是从父级到自己，递归处理
+  // 父组件执行了，子组件销毁了可以跳过执行
   queue.sort((a, b) => a.id - b.id)
 
   // do not cache length because more watchers might be pushed
   // as we run existing watchers
+  // 依次执行watcher的run方法
+  // 动态计算
   for (index = 0; index < queue.length; index++) {
     watcher = queue[index]
     if (watcher.before) {
@@ -167,12 +171,15 @@ function callActivatedHooks (queue) {
  */
 export function queueWatcher (watcher: Watcher) {
   const id = watcher.id
-  // 一次只执行一次任务
+  // 去重
   if (has[id] == null) {
+    // 缓存watcher
     has[id] = true
+    // 表明当前watcher没有被刷新
     if (!flushing) {
       queue.push(watcher)
     } else {
+      // 保证watcher插入到指定的位置，保证watcher是有序的
       // if already flushing, splice the watcher based on its id
       // if already past its id, it will be run next immediately.
       let i = queue.length - 1
@@ -187,6 +194,7 @@ export function queueWatcher (watcher: Watcher) {
       waiting = true
 
       if (process.env.NODE_ENV !== 'production' && !config.async) {
+        // 同步执行刷新watcher队列
         flushSchedulerQueue()
         return
       }

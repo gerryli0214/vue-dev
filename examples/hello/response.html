@@ -5,34 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hello World</title>
-  <script src="../../dist/vue.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
 </head>
 <body>
 <div id='app'>
-  <div>msg: {{msg}}</div>
-  <div>count: {{count}}</div>
+  <div v-if="countAdd === 7 || countAdd === 3">msg: {{msg}}</div>
+  <div>count: {{countAdd}}</div>
+  <button @click="handle">点击</button>
 </div>
 <script>
     var vm = new Vue({
         el: '#app',
         data: {
             msg: 'Hello World',
-            count: 0
+            count: 0,
+            cc: {},
+            _dd: 11,
+            $ee: 22
         },
         computed: {
             countAdd () {
-                return this.count++
+                return this.cc.a+this.cc.b
             }
         },
+        created() {
+          this.bb = 22
+        },
+      async mounted(){
+        await this.test();
+      },
         watch: {
             count (newVal) {
                 console.log(newVal)
             }
         },
         methods: {
-            test () {
+          async handle(){
+            debugger
+            this.cc = {a:2}
+            await this.bb(1)
+          },
+
+            async test () {
+              //this.cc = {b:1}
+              //this.cc.a = 2
+              await this.aa(4)
+              await this.bb(3)
+      //         setTimeout(() => {
+      //     //       this.cc = {b:3}
+      //         }, 1000)
+      //         setTimeout(() => {
+      //           this.cc.a = 4
+      // //          this.$set(this.cc, 'a', 4)
+      //         }, 2000)
                 console.log('这是一个主方法')
-            }
+            },
+          async aa (num) {
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    this.cc = {b:num}
+                  resolve()
+                }, 1000)
+              })
+          },
+          async bb (num) {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                 this.cc.a = num
+                //this.$set(this.cc, 'a', num)
+                resolve()
+              }, 2000)
+            })
+          }
         }
     })
 </script>

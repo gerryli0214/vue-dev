@@ -11,7 +11,11 @@ const callbacks = []
 let pending = false
 // 微任务，在里面调用next-tick的回调
 function flushCallbacks () {
+  // 控制异步队列执行
   pending = false
+  // 清空callbacks数组
+  // flushSchedulQueue
+  // 用户自己调用this.$nextTick
   const copies = callbacks.slice(0)
   callbacks.length = 0
   for (let i = 0; i < copies.length; i++) {

@@ -88,17 +88,19 @@ export function parse (
   platformGetTagNamespace = options.getTagNamespace || no
   const isReservedTag = options.isReservedTag || no
   maybeComponent = (el: ASTElement) => !!el.component || !isReservedTag(el.tag)
-
+  // 三个数组，数组中每个元素都是一个函数，这些函数分别是style, class, model
   transforms = pluckModuleFunction(options.modules, 'transformNode')
   preTransforms = pluckModuleFunction(options.modules, 'preTransformNode')
   postTransforms = pluckModuleFunction(options.modules, 'postTransformNode')
 
   delimiters = options.delimiters
-
+  // 解析中间结果
   const stack = []
   const preserveWhitespace = options.preserveWhitespace !== false
   const whitespaceOption = options.whitespace
+  // 最终return出去的ast对象
   let root
+  // 当前元素的父元素
   let currentParent
   let inVPre = false
   let inPre = false
@@ -660,7 +662,9 @@ function processSlotContent (el) {
             )
           }
         }
+        // 获取插槽名称及是否为动态值
         const { name, dynamic } = getSlotName(slotBinding)
+        // 记录插槽名称
         el.slotTarget = name
         el.slotTargetDynamic = dynamic
         el.slotScope = slotBinding.value || emptySlotScopeToken // force it into a scoped slot for perf

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello World</title>
+    <script src="../../dist/vue.js"></script>
+</head>
+<body>
+    <div id='app'>
+      <div>{{msg}}</div>
+      <button @click='test'>123</button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'Hello World',
+                a: 11
+            },
+            computed: {
+              testA () {
+                console.log('执行了计算属性')
+                return this.a * 2
+              }
+            },
+            watch: {
+              a () {
+                console.log(`触发了watch`)
+              }
+            },
+            methods: {
+                test () {
+                  this.a = Math.random()
+                }
+            },
+            created() {
+                console.log('执行了主组件上的created方法')
+            },
+        })
+    </script>
+</body>
+</html>

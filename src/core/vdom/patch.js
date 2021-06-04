@@ -411,7 +411,7 @@ export function createPatchFunction (backend) {
       removeNode(vnode.elm)
     }
   }
-
+  // vue diff过程
   function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
     let oldStartIdx = 0
     let newStartIdx = 0
@@ -709,7 +709,6 @@ export function createPatchFunction (backend) {
   }
   // 挂载DOM方法
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
-    debugger
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
       return

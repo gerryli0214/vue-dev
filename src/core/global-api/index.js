@@ -22,6 +22,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // config
   const configDef = {}
   configDef.get = () => config
+  // 防止直接覆盖config
   if (process.env.NODE_ENV !== 'production') {
     configDef.set = () => {
       warn(
@@ -60,7 +61,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // components with in Weex's multi-instance scenarios.
   // 拷贝一份vue的构造方法，在组件初始化时可能会用到
   Vue.options._base = Vue
-
+  // 将keey-alive组件放到vue.options.components上
   extend(Vue.options.components, builtInComponents)
   // 初始化vue.use api
   initUse(Vue)

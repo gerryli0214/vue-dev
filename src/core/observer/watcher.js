@@ -50,7 +50,6 @@ export default class Watcher {
     options?: ?Object,
     isRenderWatcher?: boolean
   ) {
-    debugger
     this.vm = vm
     // 渲染组件的watcher，通常computed 和 watch 也会实例化watcher
     if (isRenderWatcher) {
@@ -82,6 +81,7 @@ export default class Watcher {
       : ''
     // parse expression for getter
     // expression是function的情况：computed，mountComponent
+    // 获取watcher的getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
@@ -108,7 +108,7 @@ export default class Watcher {
    * 执行更新组件的方法，先将当前要执行的watcher推入到执行队列
    */
   get () {
-    // 设置当前处理的Watcher
+    // 对新值进行依赖收集
     pushTarget(this)
     let value
     const vm = this.vm
@@ -135,7 +135,7 @@ export default class Watcher {
 
   /**
    * Add a dependency to this directive.
-   * 添加依赖
+   * 将dep放到watcher中
    */
   addDep (dep: Dep) {
     const id = dep.id
@@ -144,6 +144,7 @@ export default class Watcher {
       this.newDepIds.add(id)
       this.newDeps.push(dep)
       if (!this.depIds.has(id)) {
+        // 将watcher放到dep中
         dep.addSub(this)
       }
     }
@@ -178,10 +179,12 @@ export default class Watcher {
   update () {
     /* istanbul ignore else */
     if (this.lazy) {
+      // 标记懒执行是否可执行状态，false不执行计算属性计算
       this.dirty = true
-    } else if (this.sync) {
+    } else if (this.sync) { // 同步执行
       this.run()
     } else {
+      // 将当前watcher放入到watcher队列
       queueWatcher(this)
     }
   }
@@ -205,6 +208,7 @@ export default class Watcher {
         const oldValue = this.value
         this.value = value
         if (this.user) {
+          // 深度监听回调
           try {
             this.cb.call(this.vm, value, oldValue)
           } catch (e) {

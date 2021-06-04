@@ -65,7 +65,7 @@ export function parseHTML (html, options) {
       let textEnd = html.indexOf('<')
       if (textEnd === 0) {
         // Comment:
-        // 检测HTML文件是否有注释
+        // 处理注释
         if (comment.test(html)) {
           const commentEnd = html.indexOf('-->')
 

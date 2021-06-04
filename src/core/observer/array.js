@@ -37,6 +37,7 @@ methodsToPatch.forEach(function (method) {
         inserted = args.slice(2)
         break
     }
+    // 响应式处理
     if (inserted) ob.observeArray(inserted)
     // notify change
     // 每次数据的改变，都要去通知数据更新

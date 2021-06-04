@@ -45,9 +45,8 @@ export default class Dep {
       // order
       subs.sort((a, b) => a.id - b.id)
     }
+    // 执行所有订阅watcher的update方法
     for (let i = 0, l = subs.length; i < l; i++) {
-      // 执行订阅对象批量更新？？？@todo
-      // 每个subs都有update方法
       subs[i].update()
     }
   }

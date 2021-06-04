@@ -12,9 +12,11 @@ export const createCompiler = createCompilerCreator(function baseCompile (
   template: string,
   options: CompilerOptions
 ): CompiledResult {
-  // 将模板文件解析为对象
+  // 将模板文件解析为ast对象
   const ast = parse(template.trim(), options)
+  // 优化，静态标记
   if (options.optimize !== false) {
+    // 遍历ast，标记静态节点和静态根节点
     optimize(ast, options)
   }
   // 将模板解析成render语法格式

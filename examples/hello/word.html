@@ -11,7 +11,9 @@
 <div id='app'>
   <div>{{count}}</div>
   <div>{{countAdd(1)}}</div>
-  <test world="smile"></test>
+  <test world="smile">
+    <span>hello world</span>
+  </test>
   <button @click='add'>按钮</button>
 </div>
 <script>
@@ -34,7 +36,7 @@
                         hello: 'hello'
                     }
                 },
-                template: '<h1><span>{{hello}}</span><span>{{world}}</span></h1>'
+                template: '<h1><slot></slot></h1>'
             }
         },
         computed: {
