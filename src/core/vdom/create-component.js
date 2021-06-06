@@ -33,7 +33,7 @@ import {
 } from 'weex/runtime/recycle-list/render-component-template'
 
 // inline hooks to be invoked on component VNodes during patch
-// 渲染组件相关钩子
+// patch期间，在组件的VNode上调用内联钩子
 const componentVNodeHooks = {
   // 组件初始化方法
   init (vnode: VNodeWithData, hydrating: boolean): ?boolean {
@@ -43,19 +43,21 @@ const componentVNodeHooks = {
       vnode.data.keepAlive
     ) {
       // kept-alive components, treat as a patch
+      // 当组件被keep-alive包裹时
       const mountedNode: any = vnode // work around flow
       componentVNodeHooks.prepatch(mountedNode, mountedNode)
     } else {
       // 实例化组件
+      // 非keep-alive
       const child = vnode.componentInstance = createComponentInstanceForVnode(
         vnode,
         activeInstance
       )
-      //挂载组件
+      // 挂载组件
       child.$mount(hydrating ? vnode.elm : undefined, hydrating)
     }
   },
-
+  // 更新老VNode上的属性
   prepatch (oldVnode: MountedComponentVNode, vnode: MountedComponentVNode) {
     const options = vnode.componentOptions
     const child = vnode.componentInstance = oldVnode.componentInstance
@@ -92,8 +94,10 @@ const componentVNodeHooks = {
     const { componentInstance } = vnode
     if (!componentInstance._isDestroyed) {
       if (!vnode.data.keepAlive) {
+        //非keep-alive 直接销毁组件
         componentInstance.$destroy()
       } else {
+        // keep-alive, 负责让组件失活，不销毁组件实例，从而缓存组件状态
         deactivateChildComponent(componentInstance, true /* direct */)
       }
     }
@@ -131,6 +135,7 @@ export function createComponent (
   }
 
   // async component
+  // 处理异步组件
   let asyncFactory
   if (isUndef(Ctor.cid)) {
     asyncFactory = Ctor
@@ -153,6 +158,7 @@ export function createComponent (
 
   // resolve constructor options in case global mixins are applied after
   // component constructor creation
+  // 子组件选项合并
   resolveConstructorOptions(Ctor)
 
   // transform component v-model data into props & events
@@ -188,7 +194,7 @@ export function createComponent (
   }
 
   // install component management hooks onto the placeholder node
-  // 初始化组件的钩子函数
+  // 初始化组件hook钩子
   installComponentHooks(data)
 
   // return a placeholder vnode

@@ -61,7 +61,7 @@ export function _createElement (
   children?: any,
   normalizationType?: number
 ): VNode | Array<VNode> {
-  debugger
+  // 如果是响应式对象，返回一个空节点
   if (isDef(data) && isDef((data: any).__ob__)) {
     process.env.NODE_ENV !== 'production' && warn(
       `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` +
@@ -71,6 +71,7 @@ export function _createElement (
     return createEmptyVNode()
   }
   // object syntax in v-bind
+  // 动态组件<component :is='xxx'></component>
   if (isDef(data) && isDef(data.is)) {
     tag = data.is
   }
@@ -91,6 +92,7 @@ export function _createElement (
     }
   }
   // support single function children as default scoped slot
+  // 当做插槽处理
   if (Array.isArray(children) &&
     typeof children[0] === 'function'
   ) {

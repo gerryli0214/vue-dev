@@ -42,6 +42,7 @@ export function extractPropsFromVNodeData (
           )
         }
       }
+      // 从组件上获取props
       checkProp(res, props, key, altKey, true) ||
       checkProp(res, attrs, key, altKey, false)
     }

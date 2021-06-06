@@ -101,6 +101,7 @@ export function createFunctionalComponent (
   const options = Ctor.options
   const props = {}
   const propOptions = options.props
+  // 解析props
   if (isDef(propOptions)) {
     for (const key in propOptions) {
       props[key] = validateProp(key, propOptions, propsData || emptyObject)
@@ -109,7 +110,7 @@ export function createFunctionalComponent (
     if (isDef(data.attrs)) mergeProps(props, data.attrs)
     if (isDef(data.props)) mergeProps(props, data.props)
   }
-
+  // 生成函数式组件的上下文
   const renderContext = new FunctionalRenderContext(
     data,
     props,

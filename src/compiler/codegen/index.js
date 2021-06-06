@@ -44,6 +44,8 @@ export function generate (
   ast: ASTElement | void,
   options: CompilerOptions
 ): CodegenResult {
+  // 实例化codeState
+  // state.staticRenderFns = [] && state.directives
   const state = new CodegenState(options)
   const code = ast ? genElement(ast, state) : '_c("div")'
   return {
@@ -72,6 +74,7 @@ export function genElement (el: ASTElement, state: CodegenState): string {
   } else {
     // component or element
     let code
+    // 处理动态组件
     if (el.component) {
       code = genComponent(el.component, el, state)
     } else {
@@ -315,10 +318,12 @@ function genDirectives (el: ASTElement, state: CodegenState): string | void {
   for (i = 0, l = dirs.length; i < l; i++) {
     dir = dirs[i]
     needRuntime = true
+    // 获取当前指令方法
     const gen: DirectiveFunction = state.directives[dir.name]
     if (gen) {
       // compile-time directive that manipulates AST.
       // returns true if it also needs a runtime counterpart.
+      // 编译当前指令
       needRuntime = !!gen(el, dir, state.warn)
     }
     if (needRuntime) {
@@ -471,6 +476,7 @@ export function genChildren (
   if (children.length) {
     const el: any = children[0]
     // optimize single v-for
+    // 单个v-for处理优化
     if (children.length === 1 &&
       el.for &&
       el.tag !== 'template' &&
