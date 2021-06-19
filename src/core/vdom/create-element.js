@@ -62,6 +62,7 @@ export function _createElement (
   normalizationType?: number
 ): VNode | Array<VNode> {
   // 如果是响应式对象，返回一个空节点
+  debugger
   if (isDef(data) && isDef((data: any).__ob__)) {
     process.env.NODE_ENV !== 'production' && warn(
       `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` +
@@ -92,7 +93,7 @@ export function _createElement (
     }
   }
   // support single function children as default scoped slot
-  // 当做插槽处理
+  // 子节点是一个function当做插槽处理
   if (Array.isArray(children) &&
     typeof children[0] === 'function'
   ) {
@@ -126,7 +127,7 @@ export function _createElement (
       )
     } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
       // component
-      // 创建组件
+      // options中存在components选项，初始化组件构造方法
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
       // unknown or unlisted namespaced elements

@@ -5,13 +5,16 @@ import type VNode from 'core/vdom/vnode'
 /**
  * Runtime helper for resolving raw children VNodes into a slot object.
  */
+// 将子节点合并到slot属性中
 export function resolveSlots (
   children: ?Array<VNode>,
   context: ?Component
 ): { [key: string]: Array<VNode> } {
+  // 组件的子节点，一般都为插槽
   if (!children || !children.length) {
     return {}
   }
+  debugger
   const slots = {}
   for (let i = 0, l = children.length; i < l; i++) {
     const child = children[i]

@@ -66,7 +66,7 @@ function markStatic (node: ASTNode) {
     }
   }
 }
-
+// 标记静态根节点
 function markStaticRoots (node: ASTNode, isInFor: boolean) {
   if (node.type === 1) {
     if (node.static || node.once) {

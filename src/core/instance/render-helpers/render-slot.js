@@ -5,6 +5,7 @@ import { extend, warn, isObject } from 'core/util/index'
 /**
  * Runtime helper for rendering <slot>
  */
+// 渲染插槽内容
 export function renderSlot (
   name: string,
   fallback: ?Array<VNode>,
@@ -24,8 +25,10 @@ export function renderSlot (
       }
       props = extend(extend({}, bindObject), props)
     }
+    // 作用域插槽，获取插槽VNode
     nodes = scopedSlotFn(props) || fallback
   } else {
+    // 获取插槽VNode
     nodes = this.$slots[name] || fallback
   }
 

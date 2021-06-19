@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hello World</title>
+  <script src="../../dist/vue.js"></script>
+</head>
+<body>
+<div id='app'>
+<!--  <test>-->
+<!--    <template slot="hello">-->
+<!--      123-->
+<!--    </template>-->
+<!--  </test>-->
+</div>
+<script>
+  new Vue({
+    // el: '#app',
+    render (createElement) {
+      return createElement('test', [
+        createElement('h3', {
+          slot: 'hello',
+          domProps: {
+            innerText: '123'
+          }
+        })
+      ])
+    },
+    components: {
+      test: {
+        render(createElement) {
+          return createElement('h1', [ this.$slots.hello ]);
+        }
+        // template: '<h1>' +
+        //   '<slot name="hello"></slot>' +
+        //   '</h1>'
+      }
+    }
+  }).$mount('#app')
+</script>
+</body>
+</html>

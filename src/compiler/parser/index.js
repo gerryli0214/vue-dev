@@ -142,6 +142,7 @@ export function parse (
       if (element.elseif || element.else) {
         processIfConditions(element, currentParent)
       } else {
+        // 如果元素存在作用域插槽，将其挂载到父元素scopedSlots上
         if (element.slotScope) {
           // scoped slot
           // keep it in the children list so that v-else(-if) conditions can
@@ -444,6 +445,7 @@ export function processElement (
   )
 
   processRef(element)
+  // 处理插槽内容
   processSlotContent(element)
   processSlotOutlet(element)
   processComponent(element)
@@ -601,6 +603,7 @@ function processOnce (el) {
 // e.g. <template slot="xxx">, <div slot-scope="xxx">
 function processSlotContent (el) {
   let slotScope
+  debugger
   if (el.tag === 'template') {
     slotScope = getAndRemoveAttr(el, 'scope')
     /* istanbul ignore if */
@@ -629,7 +632,7 @@ function processSlotContent (el) {
     el.slotScope = slotScope
   }
 
-  // slot="xxx"
+  // slot="xxx"，获取slot名称
   const slotTarget = getBindingAttr(el, 'slot')
   if (slotTarget) {
     el.slotTarget = slotTarget === '""' ? '"default"' : slotTarget

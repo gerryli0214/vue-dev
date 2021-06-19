@@ -97,6 +97,7 @@ export function initInternalComponent (vm: Component, options: InternalComponent
   const vnodeComponentOptions = parentVnode.componentOptions
   opts.propsData = vnodeComponentOptions.propsData
   opts._parentListeners = vnodeComponentOptions.listeners
+  // 当前组件的子节点，一般为插槽内容
   opts._renderChildren = vnodeComponentOptions.children
   opts._componentTag = vnodeComponentOptions.tag
 

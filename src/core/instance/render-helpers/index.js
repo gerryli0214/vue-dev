@@ -17,6 +17,7 @@ export function installRenderHelpers (target: any) {
   target._n = toNumber
   target._s = toString
   target._l = renderList
+  // 渲染插槽
   target._t = renderSlot
   target._q = looseEqual
   target._i = looseIndexOf
@@ -26,6 +27,7 @@ export function installRenderHelpers (target: any) {
   target._b = bindObjectProps
   target._v = createTextVNode
   target._e = createEmptyVNode
+  // 处理作用域插槽
   target._u = resolveScopedSlots
   target._g = bindObjectListeners
   target._d = bindDynamicKeys

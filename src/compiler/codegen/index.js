@@ -53,8 +53,9 @@ export function generate (
     staticRenderFns: state.staticRenderFns
   }
 }
-
+// 将ast语法树，解析成
 export function genElement (el: ASTElement, state: CodegenState): string {
+  debugger
   if (el.parent) {
     el.pre = el.pre || el.parent.pre
   }
@@ -361,7 +362,7 @@ function genInlineTemplate (el: ASTElement, state: CodegenState): ?string {
     }]}`
   }
 }
-
+// 处理作用域插槽
 function genScopedSlots (
   el: ASTElement,
   slots: { [key: string]: ASTElement },
@@ -371,6 +372,7 @@ function genScopedSlots (
   // components with only scoped slots to skip forced updates from parent.
   // but in some cases we have to bail-out of this optimization
   // for example if the slot contains dynamic names, has v-if or v-for on them...
+  // v-for, 动态slots，v-if下需要强制刷新
   let needsForceUpdate = el.for || Object.keys(slots).some(key => {
     const slot = slots[key]
     return (
@@ -412,7 +414,7 @@ function genScopedSlots (
   const generatedSlots = Object.keys(slots)
     .map(key => genScopedSlot(slots[key], state))
     .join(',')
-
+  // 注意是否需要强制渲染
   return `scopedSlots:_u([${generatedSlots}]${
     needsForceUpdate ? `,null,true` : ``
   }${
@@ -438,18 +440,22 @@ function containsSlotChild (el: ASTNode): boolean {
   }
   return false
 }
-
+// 处理作用域插槽
 function genScopedSlot (
   el: ASTElement,
   state: CodegenState
 ): string {
+  // 作用域插槽变量
   const isLegacySyntax = el.attrsMap['slot-scope']
+  // 判断是否存在v-if
   if (el.if && !el.ifProcessed && !isLegacySyntax) {
     return genIf(el, state, genScopedSlot, `null`)
   }
+  // 判断是否存在v-for
   if (el.for && !el.forProcessed) {
     return genFor(el, state, genScopedSlot)
   }
+  // 作用域插槽变量
   const slotScope = el.slotScope === emptySlotScopeToken
     ? ``
     : String(el.slotScope)
@@ -548,10 +554,12 @@ export function genText (text: ASTText | ASTExpression): string {
 export function genComment (comment: ASTText): string {
   return `_e(${JSON.stringify(comment.text)})`
 }
-
+// 处理插槽
 function genSlot (el: ASTElement, state: CodegenState): string {
+  // 插槽名称
   const slotName = el.slotName || '"default"'
   const children = genChildren(el, state)
+  // _t(slotName, children)
   let res = `_t(${slotName}${children ? `,${children}` : ''}`
   const attrs = el.attrs || el.dynamicAttrs
     ? genProps((el.attrs || []).concat(el.dynamicAttrs || []).map(attr => ({

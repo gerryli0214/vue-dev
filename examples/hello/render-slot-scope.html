@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hello World</title>
+  <script src="../../dist/vue.js"></script>
+</head>
+<body>
+<div id='app'>
+<!--  <test>-->
+<!--    <span slot="hello" slot-scope='scope'>-->
+<!--      {{scope.hello}}-->
+<!--    </span>-->
+<!--  </test>-->
+</div>
+<script>
+  new Vue({
+    // el: '#app',
+    render (createElement) {
+      return createElement('test', {
+        scopedSlots:{
+          hello: scope => { // 父组件生成渲染方法中，最终转换的作用域插槽方法和这种写法一致
+            return createElement('span', {
+              domProps: {
+                innerText: scope.hello
+              }
+            })
+          }
+        }
+      })
+    },
+    components: {
+      test: {
+        data () {
+          return {
+            hello: '123'
+          }
+        },
+        render (createElement) {
+          // 作用域插槽父组件传递过来的是function，需要手动调用生成VNode
+          let slotVnode = this.$scopedSlots.hello({ hello: this.hello })
+          return createElement('h1', [ slotVnode ])
+        }
+        // template: '<h1>' +
+        //   '<slot name="hello" :hello="hello"></slot>' +
+        //   '</h1>'
+      }
+    }
+  }).$mount('#app')
+
+</script>
+</body>
+</html>

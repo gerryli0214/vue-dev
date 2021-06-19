@@ -9,66 +9,25 @@
 </head>
 <body>
 <div id='app'>
-  <test :world="item" v-for = 'item in smile'>
-    <template slot="hello" slot-scope="scope">
-      {{scope}}
-    </template>
+  <test>
+      <template slot="hello" slot-scope='scope'>
+        {{scope.hello}}
+      </template>
   </test>
-  <button @click='add'>按钮</button>
 </div>
 <script>
     var vm = new Vue({
         el: '#app',
-        data: {
-            count: 1,
-            firstName: 'li',
-            lastName: 'gerry',
-            smile: [{type: 1}, {type: 2}]
-        },
         components: {
             test: {
-                props: {
-                    world: {
-                        type: [String, Number, Object]
-                    }
-                },
                 data () {
                     return {
-                        hello: 'hello'
+                        hello: '123'
                     }
                 },
                 template: '<h1>' +
-                    '<slot :row="world" name="hello"></slot>' +
+                    '<slot name="hello" :hello="hello"></slot>' +
                   '</h1>'
-            }
-        },
-        computed: {
-            countAdd () {
-                return this.count++
-            },
-            fullName: {
-                get () {
-                    return this.firstName + ' ' + this.lastName
-                },
-                set: function (newValue) {
-                    var names = newValue.split(' ')
-                    this.firstName = names[0]
-                    this.lastName = names[names.length - 1]
-                }
-            }
-        },
-        watch: {
-            count (val) {
-                console.log(val)
-            }
-        },
-        methods: {
-            add () {
-                this.count++
-                this.smile++
-                // this.$nextTick(() => {
-                // debugger
-                // })
             }
         }
     })
