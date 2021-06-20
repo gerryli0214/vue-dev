@@ -11,7 +11,7 @@ export default {
     updateDirectives(vnode, emptyNode)
   }
 }
-
+// 处理指令
 function updateDirectives (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   if (oldVnode.data.directives || vnode.data.directives) {
     _update(oldVnode, vnode)
@@ -19,6 +19,7 @@ function updateDirectives (oldVnode: VNodeWithData, vnode: VNodeWithData) {
 }
 
 function _update (oldVnode, vnode) {
+  debugger
   const isCreate = oldVnode === emptyNode
   const isDestroy = vnode === emptyNode
   const oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context)
@@ -103,11 +104,11 @@ function normalizeDirectives (
   // $flow-disable-line
   return res
 }
-
+// 获取指令名称
 function getRawDirName (dir: VNodeDirective): string {
   return dir.rawName || `${dir.name}.${Object.keys(dir.modifiers || {}).join('.')}`
 }
-
+// 调用指令钩子方法
 function callHook (dir, hook, vnode, oldVnode, isDestroy) {
   const fn = dir.def && dir.def[hook]
   if (fn) {

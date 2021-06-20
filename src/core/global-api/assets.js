@@ -8,6 +8,7 @@ export function initAssetRegisters (Vue: GlobalAPI) {
    * Create asset registration methods.
    */
   ASSET_TYPES.forEach(type => {
+    // 全局注册，默认组装组件构造方法，都会合并全局ASSETS
     Vue[type] = function (
       id: string,
       definition: Function | Object
@@ -19,11 +20,13 @@ export function initAssetRegisters (Vue: GlobalAPI) {
         if (process.env.NODE_ENV !== 'production' && type === 'component') {
           validateComponentName(id)
         }
+        // 全局注册组件
         if (type === 'component' && isPlainObject(definition)) {
           // 设置组件名称
           definition.name = definition.name || id
           definition = this.options._base.extend(definition)
         }
+        // 全局注册指令
         if (type === 'directive' && typeof definition === 'function') {
           definition = { bind: definition, update: definition }
         }

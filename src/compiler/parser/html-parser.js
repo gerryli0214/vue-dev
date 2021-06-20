@@ -209,7 +209,7 @@ export function parseHTML (html, options) {
       }
     }
   }
-
+  // 处理开始节点
   function handleStartTag (match) {
     const tagName = match.tagName
     const unarySlash = match.unarySlash
@@ -222,11 +222,12 @@ export function parseHTML (html, options) {
         parseEndTag(tagName)
       }
     }
-
+    // 是否是自闭合标签
     const unary = isUnaryTag(tagName) || !!unarySlash
 
     const l = match.attrs.length
     const attrs = new Array(l)
+    // 处理节点属性
     for (let i = 0; i < l; i++) {
       const args = match.attrs[i]
       const value = args[3] || args[4] || args[5] || ''
@@ -242,12 +243,12 @@ export function parseHTML (html, options) {
         attrs[i].end = args.end
       }
     }
-
+    // 不是自闭合标签，将节点放入stack数组中缓存，用于处理后续标签闭合
     if (!unary) {
       stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs, start: match.start, end: match.end })
       lastTag = tagName
     }
-
+    // 处理节点中属性
     if (options.start) {
       options.start(tagName, attrs, unary, match.start, match.end)
     }

@@ -112,7 +112,7 @@ export function parse (
       warn(msg, range)
     }
   }
-
+  // 处理标签闭合
   function closeElement (element) {
     trimEndingWhitespace(element)
     if (!inVPre && !element.processed) {
@@ -214,6 +214,7 @@ export function parse (
     shouldDecodeNewlinesForHref: options.shouldDecodeNewlinesForHref,
     shouldKeepComment: options.comments,
     outputSourceRange: options.outputSourceRange,
+    // 处理开始标签
     start (tag, attrs, unary, start, end) {
       // check namespace.
       // inherit parent ns if there is one
@@ -224,7 +225,7 @@ export function parse (
       if (isIE && ns === 'svg') {
         attrs = guardIESVGBug(attrs)
       }
-
+      // 创建ASTNode
       let element: ASTElement = createASTElement(tag, attrs, currentParent)
       if (ns) {
         element.ns = ns
@@ -292,11 +293,12 @@ export function parse (
           checkRootConstraints(root)
         }
       }
-
+      // 标签处理是深度优先
       if (!unary) {
         currentParent = element
         stack.push(element)
       } else {
+        // 自闭合标签直接走closeElement流程
         closeElement(element)
       }
     },
@@ -429,11 +431,12 @@ function processRawAttrs (el) {
     el.plain = true
   }
 }
-
+// 处理元素内容
 export function processElement (
   element: ASTElement,
   options: CompilerOptions
 ) {
+  // 处理key
   processKey(element)
 
   // determine whether this is a plain element after
@@ -447,7 +450,9 @@ export function processElement (
   processRef(element)
   // 处理插槽内容
   processSlotContent(element)
+  // 处理slot标签
   processSlotOutlet(element)
+  // 处理动态组件
   processComponent(element)
   for (let i = 0; i < transforms.length; i++) {
     element = transforms[i](element, options) || element
@@ -603,7 +608,6 @@ function processOnce (el) {
 // e.g. <template slot="xxx">, <div slot-scope="xxx">
 function processSlotContent (el) {
   let slotScope
-  debugger
   if (el.tag === 'template') {
     slotScope = getAndRemoveAttr(el, 'scope')
     /* istanbul ignore if */

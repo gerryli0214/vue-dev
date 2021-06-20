@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue directive</title>
+  <script src="../../dist/vue.js"></script>
+</head>
+<body>
+<div id='app'>
+  <input type="text" v-model="inputValue" v-focus>
+</div>
+<script>
+  Vue.directive('focus', {
+    // 第一次绑定元素时调用
+    bind () {
+      debugger
+      console.log('bind')
+    },
+    // 当被绑定的元素插入到 DOM 中时……
+    inserted: function (el) {
+      debugger
+      console.log('inserted')
+      // 聚焦元素
+      el.focus()
+    },
+    // 所在组件VNode发生更新时调用
+    update () {
+      debugger
+      console.log('update')
+    },
+    // 指令所在组件的 VNode 及其子 VNode 全部更新后调用
+    componentUpdated () {
+      debugger
+      console.log('componentUpdated')
+    },
+    // 只调用一次，指令与元素解绑时调用
+    unbind () {
+      debugger
+      console.log('unbind')
+    }
+  })
+  new Vue({
+    data: {
+     inputValue: ''
+    }
+  }).$mount('#app')
+</script>
+</body>
+</html>
