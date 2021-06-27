@@ -38,7 +38,7 @@ export function addRawAttr (el: ASTElement, name: string, value: any, range?: Ra
   el.attrsMap[name] = value
   el.attrsList.push(rangeSetItem({ name, value }, range))
 }
-
+// 处理指令
 export function addDirective (
   el: ASTElement,
   name: string,
@@ -65,7 +65,7 @@ function prependModifierMarker (symbol: string, name: string, dynamic?: boolean)
     ? `_p(${name},"${symbol}")`
     : symbol + name // mark the event as captured
 }
-
+// 绑定事件
 export function addHandler (
   el: ASTElement,
   name: string,

@@ -27,6 +27,7 @@ import {
   isRegExp,
   isPrimitive
 } from '../util/index'
+import {debug} from "webpack";
 
 export const emptyNode = new VNode('', {}, [])
 
@@ -66,13 +67,12 @@ function createKeyToOldIdx (children, beginIdx, endIdx) {
   }
   return map
 }
-
+// 初始化节点生命周期钩子
 export function createPatchFunction (backend) {
   let i, j
   const cbs = {}
 
   const { modules, nodeOps } = backend
-
   for (i = 0; i < hooks.length; ++i) {
     cbs[hooks[i]] = []
     for (j = 0; j < modules.length; ++j) {
@@ -193,6 +193,9 @@ export function createPatchFunction (backend) {
         // 递归创建子节点
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
+          // 真实节点创建之后，更新节点属性，包括指令
+          // 指令首次会调用bind方法，然后会初始化指令后续hooks方法
+          debugger
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
         // 从底向上，依次插入
@@ -439,7 +442,7 @@ export function createPatchFunction (backend) {
      * 2. 新开始和老结束是一个节点
      * 3. 老结束和新结束是一个节点
      * 4. 老开始和新结束是一个几点
-     * 
+     *
      * 没有命中，只能一个个遍历
      * 一次调整结束后，调整四个游标
      */
@@ -546,6 +549,7 @@ export function createPatchFunction (backend) {
     index,
     removeOnly
   ) {
+    debugger
     if (oldVnode === vnode) {
       return
     }
@@ -620,7 +624,7 @@ export function createPatchFunction (backend) {
       if (isDef(i = data.hook) && isDef(i = i.postpatch)) i(oldVnode, vnode)
     }
   }
-
+  // 调用insert hook
   function invokeInsertHook (vnode, queue, initial) {
     // delay insert hooks for component root nodes, invoke them after the
     // element is really inserted
@@ -852,7 +856,8 @@ export function createPatchFunction (backend) {
         }
       }
     }
-
+    debugger
+    // 处理真实DOM插入页面时的hook
     invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch)
     return vnode.elm
   }

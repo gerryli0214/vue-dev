@@ -10,6 +10,7 @@
 <body>
 <div id='app'>
   <input type="text" v-model="inputValue" v-focus>
+  <span v-test="inputValue"></span>
 </div>
 <script>
   Vue.directive('focus', {
@@ -41,9 +42,16 @@
       console.log('unbind')
     }
   })
-  new Vue({
+
+  Vue.directive('test', {
+    bind (el, bind) {
+      debugger
+      el.innerText = bind.value
+    }
+  })
+  var vm = new Vue({
     data: {
-     inputValue: ''
+      inputValue: '123'
     }
   }).$mount('#app')
 </script>

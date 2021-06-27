@@ -3,11 +3,13 @@
 /**
  * Cross-platform code generation for component v-model
  */
+// 处理组件的v-model
 export function genComponentModel (
   el: ASTElement,
   value: string,
   modifiers: ?ASTModifiers
 ): ?boolean {
+  debugger
   const { number, trim } = modifiers || {}
 
   const baseValueExpression = '$$v'

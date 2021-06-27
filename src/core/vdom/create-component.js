@@ -116,7 +116,6 @@ export function createComponent (
   if (isUndef(Ctor)) {
     return
   }
-  debugger
   // 获取Vue基础构造函数，在initGlobal中，将vue基础构造方法赋值给_base属性
   const baseCtor = context.$options._base
 

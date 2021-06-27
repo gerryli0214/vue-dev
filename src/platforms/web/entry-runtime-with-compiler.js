@@ -71,7 +71,6 @@ Vue.prototype.$mount = function (
        *  2.将ast tree转换成render语法字符串
        *  3.生成render方法
        */
-      debugger
       const { render, staticRenderFns } = compileToFunctions(template, {
         // 标记元素在HTML模板字符串的开始和结束位置
         outputSourceRange: process.env.NODE_ENV !== 'production',

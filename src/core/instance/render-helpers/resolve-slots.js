@@ -14,7 +14,6 @@ export function resolveSlots (
   if (!children || !children.length) {
     return {}
   }
-  debugger
   const slots = {}
   for (let i = 0, l = children.length; i < l; i++) {
     const child = children[i]
@@ -30,6 +29,7 @@ export function resolveSlots (
     ) {
       const name = data.slot
       const slot = (slots[name] || (slots[name] = []))
+      // template标签默认忽略
       if (child.tag === 'template') {
         slot.push.apply(slot, child.children || [])
       } else {

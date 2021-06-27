@@ -22,6 +22,7 @@ import {
 } from '../helpers'
 
 export const onRE = /^@|^v-on:/
+// 自定义指令、自定义事件、动态属性
 export const dirRE = process.env.VBIND_PROP_SHORTHAND
   ? /^v-|^@|^:|^\.|^#/
   : /^v-|^@|^:|^#/
@@ -112,9 +113,10 @@ export function parse (
       warn(msg, range)
     }
   }
-  // 处理标签闭合
+  // 标签闭合时，处理元素属性
   function closeElement (element) {
     trimEndingWhitespace(element)
+    // 当前元素没有处理，就需要处理当前元素
     if (!inVPre && !element.processed) {
       element = processElement(element, options)
     }
@@ -173,7 +175,7 @@ export function parse (
       postTransforms[i](element, options)
     }
   }
-
+  // 移除空白文本节点
   function trimEndingWhitespace (el) {
     // remove trailing whitespace node
     if (!inPre) {
@@ -302,7 +304,7 @@ export function parse (
         closeElement(element)
       }
     },
-
+    // 处理结束标签
     end (tag, start, end) {
       const element = stack[stack.length - 1]
       // pop stack
@@ -313,7 +315,7 @@ export function parse (
       }
       closeElement(element)
     },
-
+    // 处理文本
     chars (text: string, start: number, end: number) {
       if (!currentParent) {
         if (process.env.NODE_ENV !== 'production') {
@@ -385,6 +387,7 @@ export function parse (
         }
       }
     },
+    // 处理注释
     comment (text: string, start, end) {
       // adding anyting as a sibling to the root node is forbidden
       // comments should still be allowed, but ignored
@@ -402,6 +405,7 @@ export function parse (
       }
     }
   })
+  // 返回ASTNode
   return root
 }
 
@@ -431,7 +435,7 @@ function processRawAttrs (el) {
     el.plain = true
   }
 }
-// 处理元素内容
+// 处理元素属性
 export function processElement (
   element: ASTElement,
   options: CompilerOptions
@@ -454,9 +458,11 @@ export function processElement (
   processSlotOutlet(element)
   // 处理动态组件
   processComponent(element)
+  // 处理class, style
   for (let i = 0; i < transforms.length; i++) {
     element = transforms[i](element, options) || element
   }
+  // 处理元素属性
   processAttrs(element)
   return element
 }
@@ -766,15 +772,17 @@ function processComponent (el) {
     el.inlineTemplate = true
   }
 }
-
+// 处理属性，指令...
 function processAttrs (el) {
   const list = el.attrsList
   let i, l, name, rawName, value, modifiers, syncGen, isDynamic
   for (i = 0, l = list.length; i < l; i++) {
     name = rawName = list[i].name
     value = list[i].value
+    // 自定义指令、自定义事件、动态属性
     if (dirRE.test(name)) {
       // mark element as dynamic
+      // 标记元素是否存在动态绑定内容
       el.hasBindings = true
       // modifiers
       modifiers = parseModifiers(name.replace(dirRE, ''))
@@ -785,6 +793,7 @@ function processAttrs (el) {
       } else if (modifiers) {
         name = name.replace(modifierRE, '')
       }
+      // v-bind绑定解析
       if (bindRE.test(name)) { // v-bind
         name = name.replace(bindRE, '')
         value = parseFilters(value)
@@ -853,7 +862,7 @@ function processAttrs (el) {
         } else {
           addAttr(el, name, value, list[i], isDynamic)
         }
-      } else if (onRE.test(name)) { // v-on
+      } else if (onRE.test(name)) { // v-on，事件绑定
         name = name.replace(onRE, '')
         isDynamic = dynamicArgRE.test(name)
         if (isDynamic) {

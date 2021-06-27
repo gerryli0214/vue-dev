@@ -50,7 +50,7 @@ function decodeAttr (value, shouldDecodeNewlines) {
   const re = shouldDecodeNewlines ? encodedAttrWithNewLines : encodedAttr
   return value.replace(re, match => decodingMap[match])
 }
-// 解析HTML
+// 解析模板文件
 export function parseHTML (html, options) {
   const stack = []
   const expectHTML = options.expectHTML
@@ -96,15 +96,18 @@ export function parseHTML (html, options) {
         }
 
         // End tag:
+        // 匹配模板结束标签
         const endTagMatch = html.match(endTag)
         if (endTagMatch) {
           const curIndex = index
+          // 更新模板文件
           advance(endTagMatch[0].length)
           parseEndTag(endTagMatch[1], curIndex, index)
           continue
         }
 
         // Start tag:
+        // 结束标签
         const startTagMatch = parseStartTag()
         if (startTagMatch) {
           handleStartTag(startTagMatch)

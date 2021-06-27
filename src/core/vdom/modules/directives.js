@@ -8,6 +8,7 @@ export default {
   create: updateDirectives,
   update: updateDirectives,
   destroy: function unbindDirectives (vnode: VNodeWithData) {
+    // 销毁时，vnode === emptyNode
     updateDirectives(vnode, emptyNode)
   }
 }
@@ -24,14 +25,16 @@ function _update (oldVnode, vnode) {
   const isDestroy = vnode === emptyNode
   const oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context)
   const newDirs = normalizeDirectives(vnode.data.directives, vnode.context)
-
+  // 插入后的回调
   const dirsWithInsert = []
+  // 更新完成后回调
   const dirsWithPostpatch = []
 
   let key, oldDir, dir
   for (key in newDirs) {
     oldDir = oldDirs[key]
     dir = newDirs[key]
+    // 新元素指令，会执行一次inserted钩子方法
     if (!oldDir) {
       // new directive, bind
       callHook(dir, 'bind', vnode, oldVnode)
@@ -40,6 +43,7 @@ function _update (oldVnode, vnode) {
       }
     } else {
       // existing directive, update
+      // 已经存在元素，会执行一次componentUpdated钩子方法
       dir.oldValue = oldDir.value
       dir.oldArg = oldDir.arg
       callHook(dir, 'update', vnode, oldVnode)
@@ -50,11 +54,13 @@ function _update (oldVnode, vnode) {
   }
 
   if (dirsWithInsert.length) {
+    // 真实DOM插入到页面中，会调用此回调方法
     const callInsert = () => {
       for (let i = 0; i < dirsWithInsert.length; i++) {
         callHook(dirsWithInsert[i], 'inserted', vnode, oldVnode)
       }
     }
+    // VNode合并insert hooks
     if (isCreate) {
       mergeVNodeHook(vnode, 'insert', callInsert)
     } else {

@@ -213,6 +213,7 @@ export function mountComponent (
   } else {
     // _render将组件变成vnode
     updateComponent = () => {
+      debugger
       vm._update(vm._render(), hydrating)
     }
   }

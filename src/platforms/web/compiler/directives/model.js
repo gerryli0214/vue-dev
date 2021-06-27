@@ -33,7 +33,7 @@ export default function model (
       )
     }
   }
-
+  // 组件的vModel
   if (el.component) {
     genComponentModel(el, value, modifiers)
     // component v-model doesn't need extra runtime

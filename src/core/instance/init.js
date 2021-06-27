@@ -65,6 +65,7 @@ export function initMixin (Vue: Class<Component>) {
     initEvents(vm)
     // 初始化插槽，获取this.$slots,定义this._c, createElement方法
     initRender(vm)
+    // 调用beforeCreate钩子
     callHook(vm, 'beforeCreate')
     // 初始化依赖注入内容，在初始化data、props之前
     initInjections(vm) // resolve injections before data/props
@@ -95,12 +96,14 @@ export function initInternalComponent (vm: Component, options: InternalComponent
   opts._parentVnode = parentVnode
 
   const vnodeComponentOptions = parentVnode.componentOptions
+  // 传参
   opts.propsData = vnodeComponentOptions.propsData
+  // 事件监听
   opts._parentListeners = vnodeComponentOptions.listeners
-  // 当前组件的子节点，一般为插槽内容
+  // 当前组件的子节点，一般为具名插槽内容
   opts._renderChildren = vnodeComponentOptions.children
   opts._componentTag = vnodeComponentOptions.tag
-
+  // render方法优先级最高
   if (options.render) {
     opts.render = options.render
     opts.staticRenderFns = options.staticRenderFns

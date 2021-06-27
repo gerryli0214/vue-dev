@@ -10,3 +10,4 @@ import platformModules from 'web/runtime/modules/index'
 const modules = platformModules.concat(baseModules)
 
 export const patch: Function = createPatchFunction({ nodeOps, modules })
+

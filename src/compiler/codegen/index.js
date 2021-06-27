@@ -55,7 +55,6 @@ export function generate (
 }
 // 将ast语法树，解析成
 export function genElement (el: ASTElement, state: CodegenState): string {
-  debugger
   if (el.parent) {
     el.pre = el.pre || el.parent.pre
   }
@@ -225,6 +224,7 @@ export function genData (el: ASTElement, state: CodegenState): string {
 
   // directives first.
   // directives may mutate the el's other properties before they are generated.
+  // 首先处理指令，指令可能会对DOM元素进行修改
   const dirs = genDirectives(el, state)
   if (dirs) data += dirs + ','
 
@@ -309,7 +309,7 @@ export function genData (el: ASTElement, state: CodegenState): string {
   }
   return data
 }
-
+// 处理指令方法
 function genDirectives (el: ASTElement, state: CodegenState): string | void {
   const dirs = el.directives
   if (!dirs) return
@@ -319,7 +319,7 @@ function genDirectives (el: ASTElement, state: CodegenState): string | void {
   for (i = 0, l = dirs.length; i < l; i++) {
     dir = dirs[i]
     needRuntime = true
-    // 获取当前指令方法
+    // 系统默认指令
     const gen: DirectiveFunction = state.directives[dir.name]
     if (gen) {
       // compile-time directive that manipulates AST.
