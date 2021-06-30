@@ -116,6 +116,7 @@ export function createComponent (
   if (isUndef(Ctor)) {
     return
   }
+  debugger
   // 获取Vue基础构造函数，在initGlobal中，将vue基础构造方法赋值给_base属性
   const baseCtor = context.$options._base
 
@@ -171,6 +172,7 @@ export function createComponent (
   const propsData = extractPropsFromVNodeData(data, Ctor, tag)
 
   // functional component
+  // 函数组件，直接返回VNode
   if (isTrue(Ctor.options.functional)) {
     return createFunctionalComponent(Ctor, propsData, data, context, children)
   }

@@ -42,13 +42,14 @@ export function FunctionalRenderContext (
   }
   const isCompiled = isTrue(options._compiled)
   const needNormalization = !isCompiled
-
+  // 组件配置项
   this.data = data
   this.props = props
   this.children = children
   this.parent = parent
   this.listeners = data.on || emptyObject
   this.injections = resolveInject(options.inject, parent)
+  // 获取插槽内容
   this.slots = () => {
     if (!this.$slots) {
       normalizeScopedSlots(
@@ -58,7 +59,7 @@ export function FunctionalRenderContext (
     }
     return this.$slots
   }
-
+  // 定义插槽属性
   Object.defineProperty(this, 'scopedSlots', ({
     enumerable: true,
     get () {
@@ -90,7 +91,7 @@ export function FunctionalRenderContext (
 }
 
 installRenderHelpers(FunctionalRenderContext.prototype)
-
+// 创建函数式组件
 export function createFunctionalComponent (
   Ctor: Class<Component>,
   propsData: ?Object,

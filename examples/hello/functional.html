@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>functional component</title>
+  <script src="../../dist/vue.js"></script>
+</head>
+<body>
+<div id='app'>
+    <button @click='init'>测试</button>
+    <my-component v-for="item in arr" :test='item'></my-component>
+</div>
+<script>
+    Vue.component('my-component', {
+        functional: true,
+        // Props 是可选的
+        props: {
+            test: {
+                type: [String, Number]
+            }
+        },
+        // 为了弥补缺少的实例
+        // 提供第二个参数作为上下文
+        render: function (createElement, context) {
+            return createElement('div', {domProps: {
+                innerText: context.props.test
+                // innerText: this.test
+            }})
+        }
+    })
+    var vm = new Vue({
+        data: {
+            hello: 'hello',
+            arr: []
+        },
+        created () {
+            this.init()
+        },
+        methods: {
+            init () {
+                let arr = []
+                for (let index = 0; index < 1000; index++) {
+                    arr.push(Math.random())
+                }
+                this.arr = arr
+            }
+        }
+    }).$mount('#app')
+</script>
+</body>
+</html>

@@ -46,6 +46,7 @@ export default class VNode {
     this.elm = elm
     this.ns = undefined
     this.context = context
+    // 函数组件作用域
     this.fnContext = undefined
     this.fnOptions = undefined
     this.fnScopeId = undefined
