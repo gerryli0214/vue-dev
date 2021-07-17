@@ -494,6 +494,7 @@ export function resolveAsset (
   if (typeof id !== 'string') {
     return
   }
+  // components/directives/filters
   const assets = options[type]
   // check local registration variations first
   if (hasOwn(assets, id)) return assets[id]

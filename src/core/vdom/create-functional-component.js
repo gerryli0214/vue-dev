@@ -119,7 +119,7 @@ export function createFunctionalComponent (
     contextVm,
     Ctor
   )
-
+  // 调用render方法，作用域默认指向window
   const vnode = options.render.call(null, renderContext._c, renderContext)
 
   if (vnode instanceof VNode) {

@@ -30,7 +30,6 @@ export function simpleNormalizeChildren (children: any) {
 // with hand-written render functions / JSX. In such cases a full normalization
 // is needed to cater to all possible types of children values.
 export function normalizeChildren (children: any): ?Array<VNode> {
-  debugger
   return isPrimitive(children)
     ? [createTextVNode(children)]
     : Array.isArray(children)

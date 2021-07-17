@@ -111,7 +111,7 @@ export function _createElement (
   if (typeof tag === 'string') {
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
-    // 普通的HTML标签
+    // 普通的HTML标签，直接创建VNode
     if (config.isReservedTag(tag)) {
       // platform built-in elements
       if (process.env.NODE_ENV !== 'production' && isDef(data) && isDef(data.nativeOn)) {
@@ -126,7 +126,7 @@ export function _createElement (
         undefined, undefined, context
       )
     } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
-      // component
+      // component,获取当前options中组件，不存在则抛出异常
       // options中存在components选项，初始化组件构造方法
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {

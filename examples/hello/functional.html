@@ -24,10 +24,12 @@
         // 为了弥补缺少的实例
         // 提供第二个参数作为上下文
         render: function (createElement, context) {
+            debugger
             return createElement('div', {domProps: {
                 innerText: context.props.test
-                // innerText: this.test
-            }})
+            }}, [
+               createElement('span', {domProps: {innerText: 123}})
+            ])
         }
     })
     var vm = new Vue({
@@ -41,7 +43,7 @@
         methods: {
             init () {
                 let arr = []
-                for (let index = 0; index < 1000; index++) {
+                for (let index = 0; index < 1; index++) {
                     arr.push(Math.random())
                 }
                 this.arr = arr

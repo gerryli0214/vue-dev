@@ -220,6 +220,7 @@ export function createPatchFunction (backend) {
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
       if (isDef(i = i.hook) && isDef(i = i.init)) {
+        debugger
         // 执行component的init方法，获取组件的实例
         i(vnode, false /* hydrating */)
       }
@@ -755,6 +756,8 @@ export function createPatchFunction (backend) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
       return
     }
+
+    debugger
 
     let isInitialPatch = false
     const insertedVnodeQueue = []
